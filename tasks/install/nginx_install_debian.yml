@@ -11,13 +11,13 @@
 
 - name: add nginx repository gpg key
   apt_key:
-    url: "{{ nginx_debian_url_gpg_key }}"
+    url: "{{ nginx_repository_gpg_key }}"
     state: present
   when: nginx_repository
 
 - name: add nginx repository
   apt_repository:
-    repo: "deb {{ nginx_url_repository }}/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} nginx"
+    repo: "deb {{ nginx_repository_url }}/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} nginx"
     state: present
     update_cache: yes
   when: nginx_repository
