@@ -1,64 +1,21 @@
----
-name: CI
-'on':
-  pull_request:
+# Название
+name: Lint Code Base
+# Определение триггера для запуска CI/CD
+on:
+  # Триггер на push любого коммита в ветку
   push:
-    branches:
-      - master
-  schedule:
-    - cron: "0 6 * * 3"
-
-defaults:
-  run:
-    working-directory: 'darexsu/ansible-role-easy-setup-nginx'
-
+    # Игнорирование ветки `master`
+    branches-ignore:
+      - 'master'
+# Задачи к выполнению
 jobs:
-
-  lint:
-    name: Lint
+  # Задача
+  linter:
+    # Сборка окружения ubuntu-latest
     runs-on: ubuntu-latest
+    # Шаги задачи
     steps:
-      - name: Check out the codebase.
-        uses: actions/checkout@v2
-        with:
-          path: 'darexsu/ansible-role-easy-setup-nginx'
-
-      - name: Set up Python 3.
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
-
-      - name: Install test dependencies.
-        run: pip3 install yamllint
-
-      - name: Lint code.
-        run: |
-          yamllint .
-  molecule:
-    name: Molecule
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        distro:
-          - debian10
-
-    steps:
-      - name: Check out the codebase.
-        uses: actions/checkout@v2
-        with:
-          path: 'darexsu/ansible-role-easy-setup-nginx'
-
-      - name: Set up Python 3.
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
-
-      - name: Install test dependencies.
-        run: pip3 install ansible molecule[docker] docker
-
-      - name: Run Molecule tests.
-        run: molecule test
-        env:
-          PY_COLORS: '1'
-          ANSIBLE_FORCE_COLOR: '1'
-          MOLECULE_DISTRO: ${{ matrix.distro }}
+      # Переключение на текущую ветку (обязательное действие, если нужен доступ к файлам репозитория)
+      - uses: actions/checkout@v2
+      # Вызов Super Linter
+      - uses: docker://github/super-linter:v2.1.0
