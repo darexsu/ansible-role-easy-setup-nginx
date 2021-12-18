@@ -1,19 +1,33 @@
-# Название
-name: Lint Code Base
-# Определение триггера для запуска CI/CD
+name: Molecule
+
 on:
-  # Триггер на push любого коммита в ветку
   push:
-    # Игнорирование ветки `master`   
-# Задачи к выполнению
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
 jobs:
-  # Задача
-  linter:
-    # Сборка окружения ubuntu-latest
+  molecule:
     runs-on: ubuntu-latest
-    # Шаги задачи
+    strategy:
+      fail-fast: false
+      matrix:
+        scenario:
+          - centos-8
+          - debian-10          
+          - ubuntu-20.04
     steps:
-      # Переключение на текущую ветку (обязательное действие, если нужен доступ к файлам репозитория)
-      - uses: actions/checkout@v2
-      # Вызов Super Linter
-      - uses: docker://github/super-linter:v2.1.0
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          path: "${{ github.repository }}"
+      - name: Molecule
+        uses: gofrolist/molecule-action@v2
+        with:
+          molecule_options: --debug --base-config molecule/_shared/base.yml
+          molecule_command: test
+          molecule_args: --scenario-name ${{ matrix.scenario }}
+        env:
+          ANSIBLE_FORCE_COLOR: '1'
