@@ -1,0 +1,35 @@
+- name: ensure dependencies are installed.
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg2
+      - lsb-release
+      - debian-archive-keyring
+    state: present
+
+- name: add nginx repository gpg key
+  apt_key:
+    url: "{{ nginx_debian_url_gpg_key }}"
+    state: present
+  when: nginx_repository
+
+- name: add nginx repository
+  apt_repository:
+    repo: "deb {{ nginx_url_repository }}/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} nginx"
+    state: present
+    update_cache: yes
+  when: nginx_repository
+
+- name: install nginx packages.
+  apt:
+    name: "{{ item }}"
+    state: present
+  ignore_errors: yes
+  with_items: "{{ nginx_install_list }}"
+
+- name: ensure nginx is started
+  ansible.builtin.systemd:
+    name: "nginx"
+    state: started

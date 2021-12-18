@@ -1,0 +1,26 @@
+- name: settings ./nginx/nginx.conf
+  template:
+    src: nginx_settings.j2
+    dest: "{{ ansible_distribution + '_nginx_settings_conf_path' | lower }}"
+    owner: root
+    group: root
+    mode: 0644
+  when: nginx_settings_conf
+  notify: restart nginx
+
+- name: settings /conf.d/
+  template:
+    src: nginx_settings_vhost.j2
+    dest: "{{ ansible_distribution + '_nginx_settings_conf_path' | lower }}conf.d/{{ nginx_settings_vhost_server_name }}.conf"
+    owner: root
+    group: root
+    mode: 0644
+  when: nginx_settings_vhost
+  notify: restart nginx
+
+- name: remove default nginx vhost config file (if configured).
+  file:
+    path: "{{ ansible_distribution + '_nginx_settings_conf_path' | lower }}conf.d/default.conf"
+    state: absent
+  when: nginx_settings_vhost_remove_default_conf
+  notify: restart nginx

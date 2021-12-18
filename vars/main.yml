@@ -1,0 +1,3 @@
+debian_nginx_settings_conf_path: "/etc/nginx/"
+ubuntu_nginx_settings_conf_path: "/etc/nginx/"
+redhat_nginx_settings_conf_path: "/etc/nginx/"
