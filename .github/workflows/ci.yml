@@ -1,29 +1,26 @@
 ---
 name: CI
- on:
+'on':
+  pull_request:
   push:
     branches:
       - master
-  pull_request:
-    branches:
-      - master
+ 
+jobs:
 
-  molecule:
+   molecule:
     name: Molecule
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        distro:
-          - centos8
-          - rockylinux8
-          - ubuntu2004
-          - ubuntu1804
+        distro:        
           - debian10
 
     steps:
       - name: Check out the codebase.
-        uses: actions/checkout@v2      
-
+        uses: actions/checkout@v2
+        with:
+          path: 'geerlingguy.nginx'
 
       - name: Set up Python 3.
         uses: actions/setup-python@v2
