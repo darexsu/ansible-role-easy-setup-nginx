@@ -14,10 +14,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        scenario:
-          - centos-8
-          - debian-10          
-          - ubuntu-20.04
+        scenario:          
+          - debian-10        
+          
     steps:
       - name: Checkout
         uses: actions/checkout@v2
