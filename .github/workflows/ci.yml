@@ -4,9 +4,7 @@ name: Lint Code Base
 on:
   # Триггер на push любого коммита в ветку
   push:
-    # Игнорирование ветки `master`
-    branches-ignore:
-      - 'master'
+    # Игнорирование ветки `master`   
 # Задачи к выполнению
 jobs:
   # Задача
