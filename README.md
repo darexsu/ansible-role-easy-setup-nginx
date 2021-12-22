@@ -1,8 +1,8 @@
 # Nginx for Debian
 Options:
   - install nginx
-  - configuration [./nginx/nginx.conf]
-  - creat virtualhost [./nginx/conf.d]
+  - edit configuration [./nginx/nginx.conf]
+  - edit virtualhost [./nginx/conf.d]
 1) Install from Github (git installed on your server)
 ```
 ansible-galaxy install git+https://github.com/darexsu/ansible-role-ssh.git
