@@ -1,4 +1,4 @@
-# Nginx for Debian
+# Ansible role Nginx for Debian
 Options:
   - install nginx
   - edit configuration [./nginx/nginx.conf]
