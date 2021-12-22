@@ -7,7 +7,7 @@ Options:
 Installation:
 1) Install from Github (git installed on your server)
 ```
-ansible-galaxy install git+https://github.com/darexsu/ansible-role-ssh.git
+ansible-galaxy install git+https://github.com/darexsu/ansible-role-nginx.git
 ```
 2) Example playbook
 ```
