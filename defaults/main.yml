@@ -9,7 +9,7 @@ nginx_repository_gpg_key: "https://nginx.org/keys/nginx_signing.key"
 #------------Settings------------#
 nginx_settings: false
 #-Configuration [./nginx/nginx.conf]
-nginx_settings_conf: true
+nginx_settings_conf: false
 nginx_settings_conf_template: "nginx_settings_conf.j2"
 nginx_settings_conf_user: "www-data"
 nginx_settings_conf_worker_processes: "auto"
