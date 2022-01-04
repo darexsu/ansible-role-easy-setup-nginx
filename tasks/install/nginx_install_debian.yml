@@ -11,23 +11,23 @@
 
 - name: add nginx repository gpg key
   apt_key:
-    url: "{{ nginx_repository_gpg_key }}"
+    url: "{{ nginx_install['repository_gpg_key'] }}"
     state: present
-  when: nginx_repository
+  when: nginx_install['repository']
 
 - name: add nginx repository
   apt_repository:
-    repo: "deb {{ nginx_repository_url }}/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} nginx"
+    repo: "deb {{ nginx_install['repository_url'] }}/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} nginx"
     state: present
     update_cache: yes
-  when: nginx_repository
+  when: nginx_install['repository']
 
 - name: install nginx packages.
   apt:
     name: "{{ item }}"
     state: present
   ignore_errors: yes
-  with_items: "{{ nginx_install_list }}"
+  with_items: "{{ nginx_install['list'] }}"
 
 - name: ensure nginx is started
   ansible.builtin.systemd:
