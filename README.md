@@ -1,14 +1,13 @@
 # Ansible role Nginx
+[![CI Molecule](https://github.com/darexsu/ansible-role-nginx/actions/workflows/ci.yml/badge.svg)](https://github.com/darexsu/ansible-role-nginx/actions/workflows/ci.yml)
 Optional:
-  - install
-      install nginx
-  - settings
-      set configuration [ ./nginx/nginx.conf ]
-      set virtualhost [ ./nginx/conf.d ]
-  - actions
-      set port [ firewalld ]
+  - install nginx
+  - set configuration [ ./nginx/nginx.conf ]
+  - set virtualhost [ ./nginx/conf.d ]
+  - set port [ firewalld ]
 
 Platforms: Debian, Ubuntu, RHEL, CentOS, Rocky, Oracle
+
 Ansible: ansible.bultin
 
 Fast start:
