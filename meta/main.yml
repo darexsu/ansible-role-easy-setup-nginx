@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: "darexsu"
-  role_name: "easy_setup_nginx"
+  role_name: "nginx"
   description: Easy install for Linux.
   company: ""
   license: "license (BSD, MIT)"
@@ -12,5 +12,15 @@ galaxy_info:
         - stretch
         - buster
         - bullseye
+    - name: Ubuntu
+      versions:
+        - trusty
+        - xenial
+        - focal
+    - name: EL
+      versions:
+        - 7
+        - 8
   galaxy_tags:
     - server
+    - nginx

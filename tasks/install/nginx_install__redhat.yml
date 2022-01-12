@@ -1,0 +1,18 @@
+---
+- name: ensure dependencies are installed.
+  ansible.builtin.package:
+    name: "{{ nginx_install__dependencies_redhat }}"
+    state: present
+    update_cache: true
+
+- name: install nginx packages.
+  ansible.builtin.package:
+    name: "{{ nginx_install__list }}"
+    state: present
+    update_cache: true
+  ignore_errors: yes
+
+- name: ensure nginx is started
+  ansible.builtin.service:
+    name: nginx
+    state: started

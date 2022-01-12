@@ -1,45 +1,53 @@
-#----------Installation----------#
-nginx_install: false
-nginx_install_list: [ nginx ]
-#-Custom repository
-nginx_repository: true
-nginx_repository_url: "http://nginx.org/packages"
-nginx_repository_gpg_key: "https://nginx.org/keys/nginx_signing.key"
+---
+# ---------Installation--------- #
 
-#------------Settings------------#
+nginx_install: false
+nginx_install__list: [nginx]
+# Custom repository
+nginx_install__repository: true
+nginx_install__repository_url: "http://nginx.org/packages"
+nginx_install__repository_gpg_key: "https://nginx.org/keys/nginx_signing.key"
+nginx_install__dependencies_debian: [apt-transport-https, ca-certificates, curl, gnupg2, lsb-release, debian-archive-keyring]
+nginx_install__dependencies_redhat: [epel-release]
+
+# -----------Settings----------- #
 nginx_settings: false
-#-Configuration [./nginx/nginx.conf]
-nginx_settings_conf: false
-nginx_settings_conf_template: "nginx_settings_conf.j2"
-nginx_settings_conf_user: "www-data"
-nginx_settings_conf_worker_processes: "auto"
-nginx_settings_conf_error_log: "/var/log/nginx/error.log notice"
-nginx_settings_conf_pidfile: "/var/run/nginx.pid"
-nginx_settings_conf_worker_connections:  "1024"
-nginx_settings_conf_multi_accept: "off"
-nginx_settings_conf_mime_file_path: "/etc/nginx/mime.types"
-nginx_settings_conf_access_log: "/var/log/nginx/access.log"
-nginx_settings_conf_sendfile: "on"
-nginx_settings_conf_tcp_nopush: "on"
-nginx_settings_conf_tcp_nodelay: "on"
-nginx_settings_conf_keepalive_timeout: "65"
-nginx_settings_conf_keepalive_requests: "100"
-nginx_settings_conf_file_path: "/etc/nginx/nginx.conf"
-#-Virtualhost [./nginx/conf.d]
-nginx_settings_vhost: false
-nginx_settings_vhost_template: "nginx_settings_vhost.j2"
-nginx_settings_vhost_remove_default_conf: true
-nginx_settings_vhost_listen_port: "80"
-nginx_settings_vhost_listen_ipv6: true
-nginx_settings_vhost_server_name: "localhost"
-nginx_settings_vhost_root: "/usr/share/nginx/html"
-nginx_settings_vhost_index: "index.html index.htm index.php"
-nginx_settings_vhost_error_page: ""
-nginx_settings_vhost_access_log: false
-nginx_settings_vhost_error_log: false
-nginx_settings_vhost_php_fpm_tcp_ip_socket: true
-nginx_settings_vhost_php_fpm_tcp_ip_socket_listen: "127.0.0.1:9000"
-nginx_settings_vhost_php_fpm_unix_socket: false
-nginx_settings_vhost_php_fpm_unix_socket_php_version: "8.0"
-nginx_settings_vhost_php_fpm_unix_socket_user: "username"
-nginx_settings_vhost_php_fpm_unix_socket_listen: "unix:/run/php/php{{ nginx_settings_vhost_php_fpm_unix_socket_php_version }}-{{ nginx_settings_vhost_php_fpm_unix_socket_user }}.sock"
+# Configuration [./nginx/nginx.conf]
+nginx_settings__conf: true
+nginx_settings__conf_template: "nginx_settings_conf.j2"
+nginx_settings__conf_user: "www-data"
+nginx_settings__conf_worker_processes: "auto"
+nginx_settings__conf_error_log: "/var/log/nginx/error.log notice"
+nginx_settings__conf_pidfile: "/var/run/nginx.pid"
+nginx_settings__conf_worker_connections: "1024"
+nginx_settings__conf_multi_accept: "off"
+nginx_settings__conf_mime_file_path: "/etc/nginx/mime.types"
+nginx_settings__conf_access_log: "/var/log/nginx/access.log"
+nginx_settings__conf_sendfile: "on"
+nginx_settings__conf_tcp_nopush: "on"
+nginx_settings__conf_tcp_nodelay: "on"
+nginx_settings__conf_keepalive_timeout: "65"
+nginx_settings__conf_keepalive_requests: "100"
+nginx_settings__conf_file_path: "/etc/nginx/nginx.conf"
+# Virtualhost [./nginx/conf.d]
+nginx_settings__vhost: true
+nginx_settings__vhost_template: "nginx_settings__vhost.j2"
+nginx_settings__vhost_remove_default_conf: true
+nginx_settings__vhost_listen_port: "80"
+nginx_settings__vhost_listen_ipv6: true
+nginx_settings__vhost_server_name: "localhost"
+nginx_settings__vhost_root: "/usr/share/nginx/html"
+nginx_settings__vhost_index: "index.html index.htm index.php"
+nginx_settings__vhost_error_page: ""
+nginx_settings__vhost_access_log: false
+nginx_settings__vhost_error_log: false
+nginx_settings__vhost_php_fpm_tcp_ip_socket: true
+nginx_settings__vhost_php_fpm_tcp_ip_socket_listen: "127.0.0.1:9000"
+nginx_settings__vhost_php_fpm_unix_socket: false
+nginx_settings__vhost_php_fpm_unix_socket_php_version: "8.0"
+nginx_settings__vhost_php_fpm_unix_socket_user: "username"
+nginx_settings__vhost_php_fpm_unix_socket_listen: "unix:/run/php/php{{ nginx_settings__vhost_php_fpm_unix_socket_php_version }}-{{ nginx_settings__vhost_php_fpm_unix_socket_user }}.sock"
+
+# ------------Actions------------ #
+nginx_actions: false
+nginx_actions__firewalld_open_port: [80, 443]
