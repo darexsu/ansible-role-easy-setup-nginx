@@ -1,4 +1,4 @@
-# Ansible role Nginx for Debian
+# Ansible role Nginx
 Optional:
   - install
       install nginx
