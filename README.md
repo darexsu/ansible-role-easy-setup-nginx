@@ -1,15 +1,22 @@
 # Ansible role Nginx for Debian
 Optional:
-  - install nginx
-  - edit configuration [ ./nginx/nginx.conf ]
-  - edit virtualhost [ ./nginx/conf.d ]
+  - install
+      install nginx
+  - settings
+      set configuration [ ./nginx/nginx.conf ]
+      set virtualhost [ ./nginx/conf.d ]
+  - actions
+      set port [ firewalld ]
 
-Installation:
+Platforms: Debian, Ubuntu, RHEL, CentOS, Rocky, Oracle
+Ansible: ansible.bultin
+
+Fast start:
 1) Install from Galaxy
 ```
-ansible-galaxy install darexsu.nginx
+ansible-galaxy install darexsu.nginx --force
 ```
-2) Example playbook
+2) Run example playbook
 ```yaml
 ---
 - hosts: all
@@ -20,5 +27,7 @@ ansible-galaxy install darexsu.nginx
       vars:
         nginx_install: true
         nginx_settings: true
-        nginx_settings__vhost: true       
+        nginx_actions: true
 ```
+3) Testing nginx:
+check <host ip> on browser
