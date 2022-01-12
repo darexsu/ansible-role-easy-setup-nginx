@@ -1,0 +1,12 @@
+---
+- name: Populate service facts
+  ansible.builtin.service_facts:
+
+- name: enable traffic in default zone on port
+  ansible.posix.firewalld:
+    port: "{{ item }}/tcp"
+    permanent: yes
+    state: enabled
+  with_items: "{{ nginx_actions__firewalld_open_port }}"
+  notify: restart firewalld
+  when: ansible_facts.services is search("firewalld.service")

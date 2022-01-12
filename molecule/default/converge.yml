@@ -3,10 +3,14 @@
   hosts: all
 
   pre_tasks:
-    - name: Update apt cache.
-      apt: update_cache=yes cache_valid_time=600
-      when: ansible_os_family == 'Debian'
-      changed_when: false
+  - name: Update apt cache.
+    apt: update_cache=yes cache_valid_time=600
+    when: ansible_os_family == 'Debian'
+    changed_when: false
 
   roles:
     - role: darexsu.nginx
+      vars:
+        nginx_install: true
+        nginx_settings: true
+        nginx_actions: true

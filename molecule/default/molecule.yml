@@ -15,10 +15,6 @@ provisioner:
   name: ansible
   playbooks:
     converge: ${MOLECULE_PLAYBOOK:-converge.yml}
-  inventory:
-    host_vars:
-      instance:
-        ansible_user: root
 scenario:
   create_sequence:
     - dependency
@@ -35,7 +31,7 @@ scenario:
     - destroy
   converge_sequence:
     - dependency
-    - create
+    # - create
     - prepare
     - converge
   destroy_sequence:
@@ -43,7 +39,7 @@ scenario:
     - cleanup
     - destroy
   test_sequence:
-    # - dependency
+    - dependency
     # - lint
     # - cleanup
     - destroy
@@ -56,6 +52,5 @@ scenario:
     # - verify
     # - cleanup
     - destroy
-
-lint: |
-  ansible-lint
+# lint: |
+#   yamllint .
