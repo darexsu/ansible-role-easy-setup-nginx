@@ -2,7 +2,7 @@
 galaxy_info:
   author: "darexsu"
   role_name: "nginx"
-  description: Easy install for Linux.
+  description: "easy setup nginx"
   company: ""
   license: "license (BSD, MIT)"
   min_ansible_version: 2.4
