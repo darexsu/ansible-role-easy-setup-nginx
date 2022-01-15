@@ -31,4 +31,4 @@ ansible-galaxy install darexsu.nginx --force
 ```
 3) Testing nginx:
 
-check "host ip" on browser
+check "http://host_ip" on browser
