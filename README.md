@@ -1,15 +1,18 @@
 # Ansible role Nginx
 [![CI Molecule](https://github.com/darexsu/ansible-role-nginx/actions/workflows/ci.yml/badge.svg)](https://github.com/darexsu/ansible-role-nginx/actions/workflows/ci.yml)
 
+Molecule testing:
+
+| Platforms |    Debian     |    Ubuntu     |    CentOS     |  Rocky Linux |
+| --------- | ------------- | ------------- | ------------- | ------------ |
+|  Version  |   10, 11      | 18.04, 20.04  |     7, 8      |      8       |
+| Nginx repository |  nginx    | nginx   | Epel    | Epel  |
+
 Optional:
   - install nginx
-  - set configuration [ ./nginx/nginx.conf ]
-  - set virtualhost [ ./nginx/conf.d ]
-  - set port [ firewalld ]
-
-Platforms: Debian, Ubuntu, RHEL, CentOS, Rocky, Oracle
-
-Ansible: ansible.bultin
+  - set ./nginx/nginx.conf
+  - set virtualhost ./nginx/conf.d/*.conf
+  - set port  ( firewalld )
 
 Fast start:
 1) Install from Galaxy

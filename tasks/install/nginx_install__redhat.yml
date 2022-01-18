@@ -1,4 +1,16 @@
 ---
+- name: import epel repo gpg key
+  ansible.builtin.rpm_key:
+    key: "{{ nginx_install__epel_repo_gpg_key_url }}"
+    state: present
+  when: nginx_install__epel_repo
+
+- name: install epel repo
+  ansible.builtin.package:
+    name: "{{ nginx_install__epel_repo_url }}"
+    state: present
+  when: nginx_install__epel_repo
+
 - name: ensure dependencies are installed.
   ansible.builtin.package:
     name: "{{ nginx_install__dependencies_redhat }}"

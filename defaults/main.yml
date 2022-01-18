@@ -2,13 +2,9 @@
 # install
 nginx_install: false
 nginx_install__list: [nginx]
-# install -> repository
-nginx_install__repository: true
-nginx_install__repository_url: "http://nginx.org/packages"
-nginx_install__repository_gpg_key: "https://nginx.org/keys/nginx_signing.key"
 # install -> dependencies
 nginx_install__dependencies_debian: [apt-transport-https, ca-certificates, curl, gnupg2, lsb-release, debian-archive-keyring]
-nginx_install__dependencies_redhat: [epel-release]
+nginx_install__dependencies_redhat: []
 
 # settings 
 nginx_settings: false
