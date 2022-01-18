@@ -1,18 +1,18 @@
 ---
-# Install
+# install
 nginx_install: false
 nginx_install__list: [nginx]
-# Install / repository
+# install -> repository
 nginx_install__repository: true
 nginx_install__repository_url: "http://nginx.org/packages"
 nginx_install__repository_gpg_key: "https://nginx.org/keys/nginx_signing.key"
-# Install / dependencies
+# install -> dependencies
 nginx_install__dependencies_debian: [apt-transport-https, ca-certificates, curl, gnupg2, lsb-release, debian-archive-keyring]
 nginx_install__dependencies_redhat: [epel-release]
 
-# Settings 
+# settings 
 nginx_settings: false
-# Settings / update configuration [./nginx/nginx.conf]
+# settings -> nginx.conf
 nginx_settings__conf: true
 nginx_settings__conf_template: "nginx_settings_conf.j2"
 nginx_settings__conf_user: "www-data"
@@ -29,7 +29,7 @@ nginx_settings__conf_tcp_nodelay: "on"
 nginx_settings__conf_keepalive_timeout: "65"
 nginx_settings__conf_keepalive_requests: "100"
 nginx_settings__conf_file_path: "/etc/nginx/nginx.conf"
-# Settings / create virtualhost [./nginx/conf.d]
+# settings -> virtualhost ( /nginx/conf.d/*.conf )
 nginx_settings__vhost: true
 nginx_settings__vhost_template: "nginx_settings__vhost.j2"
 nginx_settings__vhost_remove_default_conf: true
@@ -41,16 +41,16 @@ nginx_settings__vhost_index: "index.html index.htm index.php"
 nginx_settings__vhost_error_page: ""
 nginx_settings__vhost_access_log: false
 nginx_settings__vhost_error_log: false
-# Settings / create virtualhost / tcp_ip socket (default)
+# settings -> virtualhost -> php-fpm -> tcp_ip socket (default)
 nginx_settings__vhost_php_fpm_tcp_ip_socket: true
 nginx_settings__vhost_php_fpm_tcp_ip_socket_listen: "127.0.0.1:9000"
-# Settings / create virtualhost / unix socket 
+# settings -> virtualhost -> php-fpm -> unix socket 
 nginx_settings__vhost_php_fpm_unix_socket: false
 nginx_settings__vhost_php_fpm_unix_socket_php_version: "8.0"
 nginx_settings__vhost_php_fpm_unix_socket_user: "username"
 nginx_settings__vhost_php_fpm_unix_socket_listen: "unix:/run/php/php{{ nginx_settings__vhost_php_fpm_unix_socket_php_version }}-{{ nginx_settings__vhost_php_fpm_unix_socket_user }}.sock"
 
-# Actions
+# actions
 nginx_actions: false
-# Actions / firewalld
+# actions -> firewalld
 nginx_actions__firewalld_open_port: [80, 443]
