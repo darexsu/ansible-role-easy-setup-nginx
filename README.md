@@ -6,7 +6,7 @@ Molecule testing:
 | Platforms |    Debian     |    Ubuntu     |    CentOS     |  Rocky Linux |
 | --------- | ------------- | ------------- | ------------- | ------------ |
 |  Version  |   10, 11      | 18.04, 20.04  |     7, 8      |      8       |
-| Nginx repository |  nginx    | nginx   | Epel    | Epel  |
+| Nginx repository |  nginx.org    | nginx.org   | Epel    | Epel  |
 
 Optional:
   - install nginx
