@@ -135,7 +135,7 @@ ansible-galaxy install darexsu.nginx --force
       nginx_config__vhost_php_fpm_unix_socket_listen: "unix:/run/php/php{{ nginx_config__vhost_php_fpm_unix_socket_php_version }}-{{ nginx_config__vhost_php_fpm_unix_socket_user }}.sock"
       # config -> virtualhost -> remove default.conf
       nginx_config__vhost_remove_default_conf: true  
-
+```
 ##### Allow port playbook
 ```yaml
 ---
