@@ -3,9 +3,9 @@
   include_tasks: ./tasks/install/nginx_install__{{ ansible_os_family | lower }}.yml
   when: nginx_install
 
-- name: include nginx settings
-  include_tasks: ./tasks/settings/nginx_settings.yml
-  when: nginx_settings
+- name: include nginx config
+  include_tasks: ./tasks/config/nginx_config.yml
+  when: nginx_config
 
 - name: include nginx actions
   include_tasks: ./tasks/actions/nginx_actions.yml
