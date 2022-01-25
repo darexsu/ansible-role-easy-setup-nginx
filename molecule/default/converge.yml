@@ -2,15 +2,17 @@
 - name: Converge
   hosts: all
 
-  pre_tasks:
-  - name: Update apt cache.
-    apt: update_cache=yes cache_valid_time=600
-    when: ansible_os_family == 'Debian'
-    changed_when: false
-
   roles:
     - role: darexsu.nginx
-      vars:
-        nginx_install: true
-        nginx_config: true
-        nginx_actions: true
+      # install
+      nginx_install: true
+      
+      # config 
+      nginx_config: true
+      # config -> nginx.conf
+      nginx_config__conf: true
+      # config -> virtualhost ( /nginx/conf.d/*.conf )
+      nginx_config__vhost: true
+      
+      # actions
+      nginx_actions: true   
