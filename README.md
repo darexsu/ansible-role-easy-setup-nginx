@@ -15,10 +15,10 @@ Example playbooks:
   - [full playbook](#full-playbook)  
     - install
       - [from standart repo](#install-from-standart-repo-playbook)
-      - [from nginx repo](#install-from-nginx.org-repo-playbook)   
+      - [from nginx repo](#install-from-nginxorg-repo-playbook)   
     - config
-      - [nginx.conf](#nginx.conf-playbook)
-      - [virtualhost.conf](#virtualhost.conf-playbook)
+      - [nginx.conf](#nginxconf-playbook)
+      - [virtualhost.conf](#virtualhostconf-playbook)
     - actions
       - [allow port (firewalld)](#allow-port-playbook)
 
