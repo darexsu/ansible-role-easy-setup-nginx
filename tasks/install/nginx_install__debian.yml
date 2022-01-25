@@ -5,18 +5,21 @@
     state: present
     update_cache: true
 
-- name: add nginx repository gpg key
-  ansible.builtin.apt_key:
-    url: "{{ nginx_install__repository_gpg_key }}"
-    state: present
-  when: nginx_install__repository
+- name: add nginx repo
+  block:
+    - name: add gpg key
+      ansible.builtin.apt_key:
+        url: "{{ nginx_install__debian_nginx_repo_gpg_key }}"
+        state: present
+      when: nginx_install__repository
 
-- name: add nginx repository
-  ansible.builtin.apt_repository:
-    repo: "deb {{ nginx_install__repository_url }}/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} nginx"
-    state: present
-    update_cache: yes
-  when: nginx_install__repository
+    - name: add nginx repo
+      ansible.builtin.apt_repository:
+        repo: "deb {{ nginx_install__debian_nginx_repo_url }}/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} nginx"
+        state: present
+        update_cache: yes
+      when: nginx_install__repository
+  when: nginx_install__debian_nginx_repo
 
 - name: install nginx packages.
   ansible.builtin.apt:

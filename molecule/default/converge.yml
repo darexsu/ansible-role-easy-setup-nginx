@@ -12,5 +12,5 @@
     - role: darexsu.nginx
       vars:
         nginx_install: true
-        nginx_settings: true
+        nginx_config: true
         nginx_actions: true
