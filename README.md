@@ -89,7 +89,7 @@ ansible-galaxy install darexsu.nginx --force
       # config -> nginx.conf
       nginx_config__conf: true
       nginx_config__conf_template: "nginx_config_conf.j2"
-      nginx_config__conf_file: "/etc/nginx/nginx.conf"
+      nginx_config__conf_file: "nginx.conf"
       nginx_config__conf_user: "www-data"
 ```
 ##### Example playbook: virtualhost.conf
@@ -105,7 +105,7 @@ ansible-galaxy install darexsu.nginx --force
       # config -> virtualhost
       nginx_config__vhost: true
       nginx_config__vhost_template: "nginx_config__vhost.j2"
-      nginx_config__vhost_file: "/etc/nginx/conf.d/default.conf"
+      nginx_config__vhost_file: "default.conf"
       nginx_config__vhost_listen_port: "80"
       nginx_config__vhost_server_name: "localhost"
       # config -> virtualhost -> php-fpm -> tcp_ip socket (default)
