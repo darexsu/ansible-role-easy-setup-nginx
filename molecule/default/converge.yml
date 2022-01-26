@@ -11,7 +11,7 @@
       nginx_config: true
       # config -> nginx.conf
       nginx_config__conf: true
-      # config -> virtualhost ( /nginx/conf.d/*.conf )
+      # config -> virtualhost
       nginx_config__vhost: true
       
       # actions

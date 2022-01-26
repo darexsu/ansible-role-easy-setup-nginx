@@ -8,24 +8,24 @@ Molecule testing:
 |  Version  |   10, 11      | 18.04, 20.04  |     7, 8      |      8       |
 | repository |  nginx.org    | nginx.org   | Epel, nginx.org | Epel, nginx.org |
 
-[Install from Galaxy](#install-from-galaxy)
-
-Example playbooks: 
-  
-  - [full playbook](#full-playbook)  
-    - install
-      - [from standart repo](#install-from-standart-repo-playbook)
-      - [from nginx repo](#install-from-nginxorg-repo-playbook)   
-    - config
-      - [nginx.conf](#nginxconf-playbook)
-      - [virtualhost.conf](#virtualhostconf-playbook)
-    - actions
-      - [allow port (firewalld)](#allow-port-playbook)
-
-##### Install from Galaxy
+### 1) Install role from Galaxy
 ```
 ansible-galaxy install darexsu.nginx --force
 ```
+
+### 2) Example playbooks: 
+  
+  - [full playbook](#full-playbook)  
+    - install
+      - [from standart repo](#example-playbook-install-from-standart-repo)
+      - [from nginx repo](#example-playbook-install-from-nginxorg-repo)   
+    - config
+      - [nginx.conf](#example-playbook-nginxconf)
+      - [virtualhost.conf](#example-playbook-virtualhostconf)
+    - actions
+      - [allow port (firewalld)](#example-playbook-allow-port)
+
+
 ##### Full playbook
 ```yaml
 ---
@@ -47,7 +47,7 @@ ansible-galaxy install darexsu.nginx --force
       # actions
       nginx_actions: true    
 ```
-##### install from standart repo playbook
+##### Example playbook: install from standart repo
 ```yaml
 ---
 - hosts: all
@@ -57,11 +57,12 @@ ansible-galaxy install darexsu.nginx --force
     - role: darexsu.nginx
       # install
       nginx_install: true
-      nginx_install__debian_nginx_repo: false                                      
-      nginx_install__redhat_nginx_repo: false 
+      nginx_install__debian_repo_nginx: false                                      # Enable\disble nginx repo for debian
+      nginx_install__redhat_repo_nginx: false                                      # Enable\disble nginx repo for redhat
+
   
 ```
-##### install from nginx.org repo playbook
+##### Example playbook: install from nginx.org repo
 ```yaml
 ---
 - hosts: all
@@ -71,11 +72,11 @@ ansible-galaxy install darexsu.nginx --force
     - role: darexsu.nginx
       # install
       nginx_install: true
-      nginx_install__debian_nginx_repo: true                                      
-      nginx_install__redhat_nginx_repo: true 
+      nginx_install__debian_repo_nginx: true                                      # Enable\disble nginx repo for debian
+      nginx_install__redhat_repo_nginx: true                                      # Enable\disble nginx repo for redhat
   
 ```
-##### nginx.conf playbook
+##### Example playbook: nginx.conf
 ```yaml
 ---
 - hosts: all
@@ -86,24 +87,24 @@ ansible-galaxy install darexsu.nginx --force
       # config 
       nginx_config: true
       # config -> nginx.conf
-      nginx_config__conf: true
-      nginx_config__conf_template: "nginx_config_conf.j2"
-      nginx_config__conf_user: "www-data"
-      nginx_config__conf_worker_processes: "auto"
-      nginx_config__conf_error_log: "/var/log/nginx/error.log notice"
-      nginx_config__conf_pidfile: "/var/run/nginx.pid"
-      nginx_config__conf_worker_connections: "1024"
-      nginx_config__conf_multi_accept: "off"
-      nginx_config__conf_mime_file_path: "/etc/nginx/mime.types"
-      nginx_config__conf_access_log: "/var/log/nginx/access.log"
-      nginx_config__conf_sendfile: "on"
-      nginx_config__conf_tcp_nopush: "on"
-      nginx_config__conf_tcp_nodelay: "on"
-      nginx_config__conf_keepalive_timeout: "65"
-      nginx_config__conf_keepalive_requests: "100"
-      nginx_config__conf_file_path: "/etc/nginx/nginx.conf"
+      nginx_config__conf: true                                                    # Enable\disable "conf vars" below
+      nginx_config__conf_template: "nginx_config_conf.j2"                         # Copy template
+      nginx_config__conf_file: "/etc/nginx/nginx.conf"                            # Paste template to
+      nginx_config__conf_user: "www-data"                                         # Default: "nginx". User who start nginx
+      nginx_config__conf_worker_processes: "auto"                                 # Default: "1".
+      nginx_config__conf_error_log: "/var/log/nginx/error.log notice"             # Default: "logs/error.log error".
+      nginx_config__conf_pidfile: "/var/run/nginx.pid"                            # Default: "logs/nginx.pid".
+      nginx_config__conf_worker_connections: "1024"                               # Default: "512".
+      nginx_config__conf_multi_accept: "off"                                      # Default: "off".
+      nginx_config__conf_mime_file_path: "/etc/nginx/mime.types"                  # Default: "".
+      nginx_config__conf_access_log: "/var/log/nginx/access.log"                  # Default: "logs/access.log combined".
+      nginx_config__conf_sendfile: "off"                                          # Default: "off".
+      nginx_config__conf_tcp_nopush: "off"                                        # Default: "off".
+      nginx_config__conf_tcp_nodelay: "on"                                        # Default: "on".
+      nginx_config__conf_keepalive_timeout: "75s"                                 # Default: "75s".
+      nginx_config__conf_keepalive_requests: "1000"                               # Default: "1000".
 ```
-##### virtualhost.conf playbook
+##### Example playbook: virtualhost.conf
 ```yaml
 ---
 - hosts: all
@@ -113,30 +114,23 @@ ansible-galaxy install darexsu.nginx --force
     - role: darexsu.nginx
       # config
       nginx_config: true
-      # config -> virtualhost ( /nginx/conf.d/*.conf )
-      nginx_config__vhost: true
-      nginx_config__vhost_template: "nginx_config__vhost.j2"
-      nginx_config__vhost_file_name: "my.conf"
-      nginx_config__vhost_listen_port: "80"
-      nginx_config__vhost_listen_ipv6: true
-      nginx_config__vhost_server_name: "localhost"
-      nginx_config__vhost_root: "/usr/share/nginx/html"
-      nginx_config__vhost_index: "index.html index.htm index.php"
-      nginx_config__vhost_error_page: ""
-      nginx_config__vhost_access_log: false
-      nginx_config__vhost_error_log: false
+      # config -> virtualhost 
+      nginx_config__vhost: true                                                   # Enable\disable "vhost vars" below
+      nginx_config__vhost_template: "nginx_config__vhost.j2"                      # Template path
+      nginx_config__vhost_file: "/etc/nginx/conf.d/default.conf"                  # Config path
+      nginx_config__vhost_listen_port: "80"                                       # Default: "80". Listen port virtual host
+      nginx_config__vhost_listen_ipv6: false                                      # Enable\disable ipv6
+      nginx_config__vhost_server_name: "localhost"                                # Domen name
+      nginx_config__vhost_root: "/usr/share/nginx/html"                           # Usually site directory
+      nginx_config__vhost_index: "index.html index.htm index.php"                 # Default: "index index.html".
+      nginx_config__vhost_error_page: ""                                          # Set error page
+      nginx_config__vhost_access_log: false                                       # Enable\disable access log
+      nginx_config__vhost_error_log: false                                        # Enable\disable error log
       # config -> virtualhost -> php-fpm -> tcp_ip socket (default)
-      nginx_config__vhost_php_fpm_tcp_ip_socket: true
-      nginx_config__vhost_php_fpm_tcp_ip_socket_listen: "127.0.0.1:9000"
-      # config -> virtualhost -> php-fpm -> unix socket 
-      nginx_config__vhost_php_fpm_unix_socket: false
-      nginx_config__vhost_php_fpm_unix_socket_php_version: "8.0"
-      nginx_config__vhost_php_fpm_unix_socket_user: "username"
-      nginx_config__vhost_php_fpm_unix_socket_listen: "unix:/run/php/php{{ nginx_config__vhost_php_fpm_unix_socket_php_version }}-{{ nginx_config__vhost_php_fpm_unix_socket_user }}.sock"
-      # config -> virtualhost -> remove default.conf
-      nginx_config__vhost_remove_default_conf: true  
+      nginx_config__vhost_php_fpm_tcp_ip_socket: true                             # Enable\disable "tcp_ip vars" below
+      nginx_config__vhost_php_fpm_tcp_ip_socket_listen: "127.0.0.1:9000"          # TCP\IP socket
 ```
-##### Allow port playbook
+##### Example playbook: allow port
 ```yaml
 ---
 - hosts: all
@@ -145,7 +139,7 @@ ansible-galaxy install darexsu.nginx --force
   roles:
     - role: darexsu.nginx
       # actions
-      nginx_actions: true
+      nginx_actions: true                                                        # Enable\disable "actions vars" below
       # actions -> firewalld
-      nginx_actions__firewalld_open_port: [80, 443]
+      nginx_actions__firewalld_open_port: [80, 443]                               # allow port for firewalld
 ```
