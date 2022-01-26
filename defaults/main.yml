@@ -12,9 +12,6 @@ nginx_install__redhat_repo_epel: false                                      # En
 
 # config 
 nginx_config: false                                                         # Enable\disable "config vars" below
-# config -> copy / paste
-nginx_config__copy_file_from: ""                                            # control node path, can be absolute or relative. for example: ./my.cnf
-nginx_config__paste_file_to: ""                                             # remote path
 # config -> nginx.conf
 nginx_config__conf: false                                                   # Enable\disable "conf vars" below
 nginx_config__conf_template: "nginx_config_conf.j2"                         # Copy template
