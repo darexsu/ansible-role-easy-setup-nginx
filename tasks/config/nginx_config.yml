@@ -6,7 +6,7 @@
 - name: config ./nginx/nginx.conf
   ansible.builtin.template:
     src: nginx_config__conf.j2
-    dest: "{{ nginx_config__conf_file }}"
+    dest: "/etc/nginx/{{ nginx_config__conf_file }}"
     owner: root
     group: root
     mode: 0644
@@ -16,7 +16,7 @@
 - name: config /conf.d/
   ansible.builtin.template:
     src: "{{ nginx_config__vhost_template }}"
-    dest: "{{ nginx_config__vhost_file }}"
+    dest: "/etc/nginx/conf.d/{{ nginx_config__vhost_file }}"
     owner: root
     group: root
     mode: 0644

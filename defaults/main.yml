@@ -15,7 +15,7 @@ nginx_config: false                                                         # En
 # config -> nginx.conf
 nginx_config__conf: false                                                   # Enable\disable "conf vars" below
 nginx_config__conf_template: "nginx_config_conf.j2"                         # Copy template
-nginx_config__conf_file: "/etc/nginx/nginx.conf"                            # Paste template to
+nginx_config__conf_file: "nginx.conf"                                       # Paste template to
 nginx_config__conf_user: "www-data"                                         # Default: "nginx". User who start nginx
 nginx_config__conf_worker_processes: "auto"                                 # Default: "1".
 nginx_config__conf_error_log: "/var/log/nginx/error.log notice"             # Default: "logs/error.log error".
@@ -32,7 +32,7 @@ nginx_config__conf_keepalive_requests: "1000"                               # De
 # config -> virtualhost 
 nginx_config__vhost: false                                                  # Enable\disable "vhost vars" below
 nginx_config__vhost_template: "nginx_config__vhost.j2"                      # Template path
-nginx_config__vhost_file: "/etc/nginx/conf.d/default.conf"                  # Config path
+nginx_config__vhost_file: "default.conf"                                    # Config path
 nginx_config__vhost_listen_port: "80"                                       # Default: "80". Listen port virtual host
 nginx_config__vhost_listen_ipv6: false                                      # Enable\disable ipv6
 nginx_config__vhost_server_name: "localhost"                                # Domen name
