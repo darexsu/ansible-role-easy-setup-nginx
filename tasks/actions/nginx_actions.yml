@@ -7,6 +7,6 @@
     port: "{{ item }}/tcp"
     permanent: yes
     state: enabled
-  with_items: "{{ nginx_actions__firewalld_open_port }}"
+  with_items: "{{ nginx_actions__firewalld__open_port }}"
   notify: restart firewalld
-  when: ansible_facts.services is search("firewalld.service")
+  when: ansible_facts.services is search("firewalld.service") and nginx_actions__firewalld
