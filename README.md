@@ -35,14 +35,14 @@ ansible-galaxy install darexsu.nginx --force
   roles:
     - role: darexsu.nginx
       # install
-      nginx_install: true
+      nginx_install: true      
       
       # config 
       nginx_config: true
-      # config -> nginx.conf
+      # --- config  conf
       nginx_config__conf: true
-      # config -> virtualhost ( /nginx/conf.d/*.conf )
-      nginx_config__vhost: true
+      # --- config  vhost 
+      nginx_config__vhost: true      
       
       # actions
       nginx_actions: true    
@@ -84,13 +84,12 @@ ansible-galaxy install darexsu.nginx --force
 
   roles:
     - role: darexsu.nginx
-      # config 
+      # --- config 
       nginx_config: true
-      # config -> nginx.conf
+      # --- config  conf
       nginx_config__conf: true
-      nginx_config__conf_template: "nginx_config_conf.j2"
-      nginx_config__conf_file: "nginx.conf"
-      nginx_config__conf_user: "www-data"
+      nginx_config__conf__template: "nginx_config_conf.j2"
+      nginx_config__conf__file: "nginx.conf"
 ```
 ##### Example playbook: virtualhost.conf
 ```yaml
@@ -102,15 +101,15 @@ ansible-galaxy install darexsu.nginx --force
     - role: darexsu.nginx
       # config
       nginx_config: true
-      # config -> virtualhost
+      # --- config  vhost 
       nginx_config__vhost: true
-      nginx_config__vhost_template: "nginx_config__vhost.j2"
-      nginx_config__vhost_file: "default.conf"
-      nginx_config__vhost_listen_port: "80"
-      nginx_config__vhost_server_name: "localhost"
-      # config -> virtualhost -> php-fpm -> tcp_ip socket (default)
-      nginx_config__vhost_php_fpm_tcp_ip_socket: true
-      nginx_config__vhost_php_fpm_tcp_ip_socket_listen: "127.0.0.1:9000"
+      nginx_config__vhost__template: "nginx_config__vhost.j2"
+      nginx_config__vhost__file: "default.conf"
+      nginx_config__vhost__listen_port: "80"
+      nginx_config__vhost__server_name: "localhost"
+      # --- config  vhost  php-fpm  tcp_ip socket
+      nginx_config__vhost__php_fpm__tcp_ip_socket: true
+      nginx_config__vhost__php_fpm__tcp_ip_socket__listen: "127.0.0.1:9000"
 ```
 ##### Example playbook: allow port
 ```yaml
@@ -120,8 +119,9 @@ ansible-galaxy install darexsu.nginx --force
 
   roles:
     - role: darexsu.nginx
-      # actions
+      # --- actions
       nginx_actions: true
-      # actions -> firewalld
-      nginx_actions__firewalld_open_port: [80, 443]
+      # --- actions  firewalld
+      nginx_actions__firewalld: true
+      nginx_actions__firewalld__open_port: [80, 443]
 ```
