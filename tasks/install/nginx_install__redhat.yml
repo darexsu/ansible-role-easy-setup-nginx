@@ -39,6 +39,9 @@
     update_cache: true
   ignore_errors: yes
 
+- name: service facts
+  ansible.builtin.service_facts:
+
 - name: ensure apache2 is stopped
   ansible.builtin.service:
     name: "apache2"
