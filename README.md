@@ -42,7 +42,10 @@ ansible-galaxy install darexsu.nginx --force
       # --- config  conf
       nginx_config__conf: true
       # --- config  vhost 
-      nginx_config__vhost: true      
+      nginx_config__vhost: true
+      # --- config  vhost  php_fpm
+      nginx_config__vhost__php_fpm__tcp_ip_socket: true                           # Enable\disable "tcp_ip vars" below
+      nginx_config__vhost__php_fpm__tcp_ip_socket__listen: "127.0.0.1:9000"      
       
       # actions
       nginx_actions: true    
