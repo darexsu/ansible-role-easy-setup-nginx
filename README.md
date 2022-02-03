@@ -3,9 +3,9 @@
 
 Molecule testing:
 
-| Platforms |    Debian     |    Ubuntu     |    CentOS     |  Rocky Linux |
+| Platforms |    Debian     |    Ubuntu     |  Oracle Linux |  Rocky Linux |
 | --------- | ------------- | ------------- | ------------- | ------------ |
-|  Version  |   10, 11      | 18.04, 20.04  |     7, 8      |      8       |
+|  Version  |   10, 11      | 18.04, 20.04  |      8        |      8       |
 | repository |  nginx.org    | nginx.org   | Epel, nginx.org | Epel, nginx.org |
 
 ### 1) Install role from Galaxy
