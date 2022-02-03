@@ -1,6 +1,8 @@
 # Ansible role Nginx
 [![CI Molecule](https://github.com/darexsu/ansible-role-nginx/actions/workflows/ci.yml/badge.svg)](https://github.com/darexsu/ansible-role-nginx/actions/workflows/ci.yml)
+
 ![Ansible Role](https://img.shields.io/ansible/role/d/57564?color=brighgreen&label=downloads)
+
 Molecule testing:
 
 | Platforms |    Debian     |    Ubuntu     |  Oracle Linux |  Rocky Linux |
