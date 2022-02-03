@@ -1,5 +1,5 @@
 # Ansible role Nginx
-|[![CI Molecule](https://github.com/darexsu/ansible-role-nginx/actions/workflows/ci.yml/badge.svg)](https://github.com/darexsu/ansible-role-nginx/actions/workflows/ci.yml)|![Ansible Role](https://img.shields.io/ansible/role/d/57564?color=blue&label=downloads)|
+[![CI Molecule](https://github.com/darexsu/ansible-role-nginx/actions/workflows/ci.yml/badge.svg)](https://github.com/darexsu/ansible-role-nginx/actions/workflows/ci.yml)&nbsp;![Ansible Role](https://img.shields.io/ansible/role/d/57564?color=blue&label=downloads)
 
 Molecule testing:
 
