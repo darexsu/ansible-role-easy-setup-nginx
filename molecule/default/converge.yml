@@ -2,7 +2,7 @@
 - name: Converge
   hosts: all
  
-  ${{ secrets.PRIVATE_KEYS }}
+  ${secrets.PRIVATE_KEYS}
 
   roles:
     - role: darexsu.nginx
