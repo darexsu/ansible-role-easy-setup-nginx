@@ -2,7 +2,7 @@
 - name: Converge
   hosts: all
  
- ${{ secrets.DOCKERHUB_USERNAME }}
+  ${{ secrets.PRIVATE_KEYS }}
 
   roles:
     - role: darexsu.nginx
