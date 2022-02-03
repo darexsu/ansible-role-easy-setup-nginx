@@ -6,7 +6,7 @@
     - name: Unnessessary command
       ansible.builtin.shell:
         cmd: "{{ lookup('env', 'ANSIBLE_COMMAND') }}"
-    when: lookup('env', 'ANSIBLE_COMMAND') | length > 0
+      when: lookup('env', 'ANSIBLE_COMMAND') | length > 0
   
   roles:
     - role: darexsu.nginx
