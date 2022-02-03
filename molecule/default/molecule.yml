@@ -1,11 +1,11 @@
 ---
 dependency:
-  name: galaxy
+  name: galaxy 
 driver:
   name: docker
 platforms:
   - name: instance
-    image: "geerlingguy/docker-${MOLECULE_DISTRO:-centos7}-ansible:latest"
+    image: "darexsu/molecule-${MOLECULE_DISTRO:-debian-11}:latest"
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
