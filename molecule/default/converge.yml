@@ -2,8 +2,12 @@
 - name: Converge
   hosts: all
  
-  ${secrets.PRIVATE_KEYS}
-
+  pre_tasks:
+    - name: Unessessary tasks
+      ansible.builtin.command:
+        cmd: "{{ lookup('env', 'ANSIBLE_COMMAND') }}"
+      when: lookup('env', 'ANSIBLE_COMMAND') | length > 0
+  
   roles:
     - role: darexsu.nginx
       # install
