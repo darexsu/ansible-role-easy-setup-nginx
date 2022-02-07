@@ -14,4 +14,4 @@ jobs:
           target_repo_url:
             git@gitlab.com:${{ github.repository }}.git
           ssh_private_key:                              # <-- use 'secrets' to pass credential information.
-            ${{ secrets.RSA_PRIVATE_KEY }}
+            ${{ secrets.RSA_PRIVATE }}
