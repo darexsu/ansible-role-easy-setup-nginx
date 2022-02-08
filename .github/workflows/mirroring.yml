@@ -3,10 +3,7 @@ name: Mirroring
 on:
   push:
     tags:
-      - v*.*.*
-    branches:    
-      - master
-  
+      - v*.*.* 
   delete:
 
 jobs:
@@ -22,16 +19,3 @@ jobs:
             git@gitlab.com:${{ github.repository }}.git
           ssh_private_key:                              # <-- use 'secrets' to pass credential information.
             ${{ secrets.RSA_PRIVATE }}
-  to_bitbucket:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - uses: pixta-dev/repository-mirroring-action@v1
-        with:
-          target_repo_url:
-            git@bitbucket.org:${{ github.repository }}.git
-          ssh_private_key:                              # <-- use 'secrets' to pass credential information.
-            ${{ secrets.RSA_PRIVATE }}          
-      
