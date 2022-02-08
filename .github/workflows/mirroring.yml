@@ -4,6 +4,8 @@ on:
   push:
     tags:
       - v*.*.*
+    branches:    
+      - main
   
   delete:
 
@@ -20,3 +22,10 @@ jobs:
             git@gitlab.com:${{ github.repository }}.git
           ssh_private_key:                              # <-- use 'secrets' to pass credential information.
             ${{ secrets.RSA_PRIVATE }}
+      - uses: pixta-dev/repository-mirroring-action@v1
+        with:
+          target_repo_url:
+            git@bitbucket.org:${{ github.repository }}.git
+          ssh_private_key:                              # <-- use 'secrets' to pass credential information.
+            ${{ secrets.RSA_PRIVATE }}          
+      
