@@ -30,9 +30,11 @@ nginx_config__conf__keepalive_timeout: "75s"                                 # D
 nginx_config__conf__keepalive_requests: "1000"                               # Default: "1000".
 # --- config  vhost 
 nginx_config__vhost: false                                                   # Enable\disable "vhost vars" below
-nginx_config__vhost__remove_default: false                                   # Remove default.conf
-nginx_config__vhost__template: "nginx_config__vhost.j2"                      # Template path
+# --- config  vhost  remove file
+nginx_config__vhost__remove_file: ""                                         # Remove config like "default.conf"
+# --- config  vhost  file
 nginx_config__vhost__file: "default.conf"                                    # Config path
+nginx_config__vhost__template: "nginx_config__vhost.j2"                      # Template path
 nginx_config__vhost__listen_port: "80"                                       # Default: "80". Listen port virtual host
 nginx_config__vhost__listen_ipv6: false                                      # Enable\disable ipv6
 nginx_config__vhost__server_name: "localhost"                                # Domen name

@@ -13,7 +13,7 @@ Molecule testing:
 ansible-galaxy install darexsu.nginx --force
 ```
 
-### 2) Example playbooks: 
+### 2) Example playbooks:
   
   - [full playbook](#full-playbook)  
     - install
