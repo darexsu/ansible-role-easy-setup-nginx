@@ -31,7 +31,7 @@ jobs:
       - uses: pixta-dev/repository-mirroring-action@v1
         with:
           target_repo_url:
-            darexsu@bitbucket.org:${{ github.repository }}.git
+            git@bitbucket.org:${{ github.repository }}.git
           ssh_private_key:                              # <-- use 'secrets' to pass credential information.
             ${{ secrets.RSA_PRIVATE }}          
       
