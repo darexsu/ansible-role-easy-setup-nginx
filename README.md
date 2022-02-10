@@ -1,12 +1,16 @@
 # Ansible role Nginx
-[![CI Molecule](https://github.com/darexsu/ansible-role-nginx/actions/workflows/ci.yml/badge.svg)](https://github.com/darexsu/ansible-role-nginx/actions/workflows/ci.yml)&emsp;![Ansible Role](https://img.shields.io/ansible/role/d/57564?color=blue&label=downloads)
+[![CI Molecule](https://github.com/darexsu/ansible-role-nginx/actions/workflows/ci.yml/badge.svg)](https://github.com/darexsu/ansible-role-nginx/actions/workflows/ci.yml)&emsp;![](https://img.shields.io/static/v1?label=idempotence&message=ok&color=success)&emsp;![Ansible Role](https://img.shields.io/ansible/role/d/57564?color=blue&label=downloads)
 
 Molecule testing:
 
-| Platforms |    Debian     |    Ubuntu     |  Oracle Linux |  Rocky Linux |
-| --------- | ------------- | ------------- | ------------- | ------------ |
-|  Version  |   10, 11      | 18.04, 20.04  |      8        |      8       |
-| repositories |  distro, nginx.org    | distro, nginx.org   | distro, nginx.org | distro, nginx.org |
+|  Official repo   | nginx version      |  Third-Party repo | nginx version | 
+| ---------------- | ------------------ | ----------------- | ------------- |
+| Debian 11        |   1.18.0           | nginx.org         |     Latest    | 
+| Debian 10        |   1.14.2           | nginx.org         |     Latest    |   
+| Ubuntu 20.04     |   1.18.0           | nginx.org         |     Latest    | 
+| Ubuntu 18.04     |   1.14.0           | nginx.org         |     Latest    |   
+| RockyLinux 8     |   1.14.1           | nginx.org         |     Latest    | 
+| OracleLinux 8    |   1.14.1           | nginx.org         |     Latest    | 
 
 ### 1) Install role from Galaxy
 ```
@@ -17,7 +21,7 @@ ansible-galaxy install darexsu.nginx --force
   
   - [full playbook](#full-playbook)  
     - install
-      - [from standart repo](#example-playbook-install-from-distros-repo)
+      - [from official repo](#example-playbook-install-from-distros-repo)
       - [from nginx repo](#example-playbook-install-from-nginxorg-repo)   
     - config
       - [nginx.conf](#example-playbook-nginxconf)
