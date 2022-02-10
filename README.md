@@ -17,14 +17,11 @@ ansible-galaxy install darexsu.nginx --force
   
   - [full playbook](#full-playbook)  
     - install
-      - [from standart repo](#example-playbook-install-from-standart-repo)
+      - [from standart repo](#example-playbook-install-from-distros-repo)
       - [from nginx repo](#example-playbook-install-from-nginxorg-repo)   
     - config
       - [nginx.conf](#example-playbook-nginxconf)
       - [virtualhost.conf](#example-playbook-virtualhostconf)
-    - actions
-      - [allow port (firewalld)](#example-playbook-allow-port)
-
 
 ##### Full playbook
 ```yaml
@@ -35,7 +32,9 @@ ansible-galaxy install darexsu.nginx --force
   roles:
     - role: darexsu.nginx
       # install
-      nginx_install: true      
+      nginx_install: true
+      # --- install  repo
+      nginx_install__repo: true       
       
       # config 
       nginx_config: true
@@ -45,12 +44,9 @@ ansible-galaxy install darexsu.nginx --force
       nginx_config__vhost: true
       # --- config  vhost  php_fpm
       nginx_config__vhost__php_fpm__tcp_ip_socket: true
-      nginx_config__vhost__php_fpm__tcp_ip_socket__listen: "127.0.0.1:9000"      
-      
-      # actions
-      nginx_actions: true    
+      nginx_config__vhost__php_fpm__tcp_ip_socket__listen: "127.0.0.1:9000"
 ```
-##### Example playbook: install from standart repo
+##### Example playbook: install from distro's repo
 ```yaml
 ---
 - hosts: all
@@ -60,8 +56,10 @@ ansible-galaxy install darexsu.nginx --force
     - role: darexsu.nginx
       # install
       nginx_install: true
-      nginx_install__debian_repo_nginx: false
-      nginx_install__redhat_repo_nginx: false
+      # install
+      nginx_install: true
+      # --- install  repo
+      nginx_install__repo: false      
 
   
 ```
@@ -75,9 +73,8 @@ ansible-galaxy install darexsu.nginx --force
     - role: darexsu.nginx
       # install
       nginx_install: true
-      nginx_install__debian_repo_nginx: true
-      nginx_install__redhat_repo_nginx: true
-  
+      # --- install  repo
+      nginx_install__repo: true  
 ```
 ##### Example playbook: nginx.conf
 ```yaml
@@ -113,18 +110,4 @@ ansible-galaxy install darexsu.nginx --force
       # --- config  vhost  php-fpm  tcp_ip socket
       nginx_config__vhost__php_fpm__tcp_ip_socket: true
       nginx_config__vhost__php_fpm__tcp_ip_socket__listen: "127.0.0.1:9000"
-```
-##### Example playbook: allow port
-```yaml
----
-- hosts: all
-  become: yes
-
-  roles:
-    - role: darexsu.nginx
-      # --- actions
-      nginx_actions: true
-      # --- actions  firewalld
-      nginx_actions__firewalld: true
-      nginx_actions__firewalld__open_port: [80, 443]
 ```

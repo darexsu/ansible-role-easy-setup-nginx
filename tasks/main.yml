@@ -6,7 +6,3 @@
 - name: include nginx config
   include_tasks: ./tasks/config/nginx_config.yml
   when: nginx_config
-
-- name: include nginx actions
-  include_tasks: ./tasks/actions/nginx_actions.yml
-  when: nginx_actions

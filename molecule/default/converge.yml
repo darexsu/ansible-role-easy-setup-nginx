@@ -12,6 +12,8 @@
     - role: darexsu.nginx
       # install
       nginx_install: true
+      # --- install  repo
+      nginx_install__repo: true  
       
       # config 
       nginx_config: true
@@ -19,6 +21,3 @@
       nginx_config__conf: true
       # config -> virtualhost
       nginx_config__vhost: true
-      
-      # actions
-      nginx_actions: true   

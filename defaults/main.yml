@@ -5,9 +5,10 @@ nginx_install__list: [nginx]                                                 # I
 # --- install  dependencies
 nginx_install__dependencies_debian: [apt-transport-https, ca-certificates, curl, gnupg2, lsb-release, debian-archive-keyring] 
 nginx_install__dependencies_redhat: []
-nginx_install__debian_repo_nginx: true                                       # Enable\disble nginx repo for debian
-nginx_install__redhat_repo_nginx: true                                       # Enable\disble nginx repo for redhat
-nginx_install__redhat_repo_epel: false                                       # Enable\disble epel repo for redhat
+# --- install  repo
+nginx_install__repo: false                                                   # add extra repos
+nginx_install__repo__nginx: true
+nginx_install__repo__epel: true
 
 # --- config 
 nginx_config: false                                                          # Enable\disable "config vars" below
@@ -45,15 +46,9 @@ nginx_config__vhost__access_log: false                                       # E
 nginx_config__vhost__error_log: false                                        # Enable\disable error log
 # --- config  vhost  php-fpm  tcp_ip socket
 nginx_config__vhost__php_fpm__tcp_ip_socket: false                           # Enable\disable "tcp_ip vars" below
-nginx_config__vhost__php_fpm__tcp_ip_socket__listen: "127.0.0.1:9000"         # TCP\IP socket
+nginx_config__vhost__php_fpm__tcp_ip_socket__listen: "127.0.0.1:9000"        # TCP\IP socket
 # --- config  vhost  php-fpm  unix_socket
 nginx_config__vhost__php_fpm__unix_socket: false                             # Enable\disable "unix socket vars" below
-nginx_config__vhost__php_fpm__unix_socket__php_version: "8.0"                 # PHP version
-nginx_config__vhost__php_fpm__unix_socket__user: "username"                   # Name of user
+nginx_config__vhost__php_fpm__unix_socket__php_version: "8.0"                # PHP version
+nginx_config__vhost__php_fpm__unix_socket__user: "username"                  # Name of user
 nginx_config__vhost__php_fpm__unix_socket__listen: "/run/php/php{{ nginx_config__vhost__php_fpm__unix_socket__php_version }}-{{ nginx_config__vhost__php_fpm__unix_socket__user }}.sock"
-
-# --- actions
-nginx_actions: false                                                         # Enable\disable "actions vars" below
-# --- actions  firewalld
-nginx_actions__firewalld: false
-nginx_actions__firewalld__open_port: [80, 443]                               # allow port for firewalld
