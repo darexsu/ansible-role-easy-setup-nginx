@@ -6,7 +6,7 @@ Molecule testing:
 | Platforms |    Debian     |    Ubuntu     |  Oracle Linux |  Rocky Linux |
 | --------- | ------------- | ------------- | ------------- | ------------ |
 |  Version  |   10, 11      | 18.04, 20.04  |      8        |      8       |
-| repository |  nginx.org    | nginx.org   | nginx.org | nginx.org |
+| repositories |  distro, nginx.org    | distro, nginx.org   | distro, nginx.org | distro, nginx.org |
 
 ### 1) Install role from Galaxy
 ```
