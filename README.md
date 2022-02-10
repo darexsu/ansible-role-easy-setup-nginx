@@ -3,7 +3,7 @@
 
 Molecule testing:
 
-|  Official repo   | nginx version      |  Third-Party repo | nginx version | 
+|  Official repo   | Nginx version      |  Third-Party repo | Nginx version | 
 | ---------------- | ------------------ | ----------------- | ------------- |
 | Debian 11        |   1.18.0           | nginx.org         |     Latest    | 
 | Debian 10        |   1.14.2           | nginx.org         |     Latest    |   
@@ -60,12 +60,8 @@ ansible-galaxy install darexsu.nginx --force
     - role: darexsu.nginx
       # install
       nginx_install: true
-      # install
-      nginx_install: true
       # --- install  repo
-      nginx_install__repo: false      
-
-  
+      nginx_install__repo: false  
 ```
 ##### Example playbook: install from nginx.org repo
 ```yaml
@@ -78,7 +74,7 @@ ansible-galaxy install darexsu.nginx --force
       # install
       nginx_install: true
       # --- install  repo
-      nginx_install__repo: true  
+      nginx_install__repo: true
 ```
 ##### Example playbook: nginx.conf
 ```yaml
