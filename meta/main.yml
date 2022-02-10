@@ -5,7 +5,7 @@ galaxy_info:
   description: "easy setup nginx"
   company: ""
   license: "license (BSD, MIT)"
-  min_ansible_version: 2.4
+  min_ansible_version: 2.11
   platforms:
     - name: Debian
       versions:

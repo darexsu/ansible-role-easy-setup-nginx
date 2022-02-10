@@ -15,7 +15,7 @@
       ansible.builtin.yum:
         name: "{{ nginx_install__epel__rpm }}"
         state: present
-  when: nginx_install__repo__epel
+  when: nginx_install__repo__epel and nginx_install__repo
 
 - name: add nginx repo for redhat
   block:
@@ -30,12 +30,14 @@
         description: nginx YUM repo
         baseurl: "{{ nginx_install__repo__nginx__rpm }}"
         gpgcheck: yes
-  when: nginx_install__repo__nginx
+        enabled: true
+        module_hotfixes: true
+  when: nginx_install__repo__nginx and nginx_install__repo
 
 - name: install nginx packages.
   ansible.builtin.package:
     name: "{{ nginx_install__list }}"
-    state: present
+    state: present   
     update_cache: true
   ignore_errors: yes
 
