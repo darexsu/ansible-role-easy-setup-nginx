@@ -1,6 +1,6 @@
 # --- install  repo  nginx
 nginx_install__repo__nginx__deb: "deb http://nginx.org/packages/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} nginx"
-nginx_install__repo__nginx__rpm: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
+nginx_install__repo__nginx__rpm: "http://nginx.org/packages/centos/$releasever/$basearch/"
 nginx_install__repo__nginx__gpg_key: "https://nginx.org/keys/nginx_signing.key"
 # --- install  epel repo for redhat
 nginx_install__epel__rpm: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
