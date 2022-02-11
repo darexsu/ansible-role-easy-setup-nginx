@@ -1,13 +1,12 @@
 ---
 # install
-# ├── dependencies
-# ├── repo
-# │
+#   ├── dependencies
+#   └── repo
 # config
-# ├── nginx_conf
-# └── vhost
-#     ├── tcp\ip socket 
-#     └── unix socket 
+#   ├── nginx_conf
+#   └── vhost
+#        ├── tcp\ip socket 
+#        └── unix socket 
 
 # --- install
 nginx_install: false                                                         # Enable\disable "install vars" below
