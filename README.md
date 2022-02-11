@@ -12,7 +12,7 @@ Molecule testing:
 | RockyLinux 8     |   1.14.1           | nginx.org         |     Latest    | 
 | OracleLinux 8    |   1.14.1           | nginx.org         |     Latest    | 
 
-### Select all or specific task
+### Select all or specific tasks
 ```bash
     install
       ├── dependencies
@@ -139,6 +139,6 @@ ansible-galaxy install darexsu.nginx --force
       nginx_config__vhost__listen_port: "80"
       nginx_config__vhost__server_name: "localhost"
       # --- config  vhost  php-fpm  unix_socket
-      nginx_config__vhost__php_fpm__unix_socket: false
+      nginx_config__vhost__php_fpm__unix_socket: true
       nginx_config__vhost__php_fpm__unix_socket__listen: "/var/run/php/php-fpm.sock"
 ```
