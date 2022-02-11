@@ -14,12 +14,12 @@ Molecule testing:
 
 ### Select all or specific task
 ```bash
- installation
+    install
       ├── dependencies
-      ├── third-party repo
- configuration
+      └── third-party repo
+    config
       ├── nginx.conf
-      └── virtual host
+      └── virtualhost.conf
                 ├── tcp/ip socket 
                 └── unix socket 
 
@@ -33,11 +33,12 @@ ansible-galaxy install darexsu.nginx --force
   
   - [full playbook](#full-playbook)  
     - install
-      - [from official repo](#example-playbook-install-from-distros-repo)
-      - [from nginx repo](#example-playbook-install-from-nginxorg-repo)   
+      - [official repo](#example-playbook-install-from-distros-repo)
+      - [third-party repo](#example-playbook-install-from-nginxorg-repo)   
     - config
       - [nginx.conf](#example-playbook-nginxconf)
-      - [virtualhost.conf](#example-playbook-virtualhostconf)
+      - [virtualhost.conf tcp/ip socket](#example-playbook-virtualhostconf-tcpip)
+      - [virtualhost.conf unix socket](#example-playbook-virtualhostconf-unix)
 
 ##### Full playbook
 ```yaml
@@ -72,8 +73,6 @@ ansible-galaxy install darexsu.nginx --force
     - role: darexsu.nginx
       # install
       nginx_install: true
-      # --- install  repo
-      nginx_install__repo: false  
 ```
 ##### Example playbook: install from nginx.org repo
 ```yaml
@@ -103,7 +102,7 @@ ansible-galaxy install darexsu.nginx --force
       nginx_config__conf__template: "nginx_config_conf.j2"
       nginx_config__conf__file: "nginx.conf"
 ```
-##### Example playbook: virtualhost.conf
+##### Example playbook: virtualhost.conf tcp/ip
 ```yaml
 ---
 - hosts: all
@@ -122,4 +121,24 @@ ansible-galaxy install darexsu.nginx --force
       # --- config  vhost  php-fpm  tcp_ip socket
       nginx_config__vhost__php_fpm__tcp_ip_socket: true
       nginx_config__vhost__php_fpm__tcp_ip_socket__listen: "127.0.0.1:9000"
+```
+##### Example playbook: virtualhost.conf unix
+```yaml
+---
+- hosts: all
+  become: yes
+
+  roles:
+    - role: darexsu.nginx
+      # config
+      nginx_config: true
+      # --- config  vhost 
+      nginx_config__vhost: true
+      nginx_config__vhost__template: "nginx_config__vhost.j2"
+      nginx_config__vhost__file: "default.conf"
+      nginx_config__vhost__listen_port: "80"
+      nginx_config__vhost__server_name: "localhost"
+      # --- config  vhost  php-fpm  unix_socket
+      nginx_config__vhost__php_fpm__unix_socket: false
+      nginx_config__vhost__php_fpm__unix_socket__listen: "/var/run/php/php-fpm.sock"
 ```

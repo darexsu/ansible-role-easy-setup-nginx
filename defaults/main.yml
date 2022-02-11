@@ -59,6 +59,4 @@ nginx_config__vhost__php_fpm__tcp_ip_socket: false                           # E
 nginx_config__vhost__php_fpm__tcp_ip_socket__listen: "127.0.0.1:9000"        # TCP\IP socket
 # --- config  vhost  php-fpm  unix_socket
 nginx_config__vhost__php_fpm__unix_socket: false                             # Enable\disable "unix socket vars" below
-nginx_config__vhost__php_fpm__unix_socket__php_version: "8.0"                # PHP version
-nginx_config__vhost__php_fpm__unix_socket__user: "username"                  # Name of user
-nginx_config__vhost__php_fpm__unix_socket__listen: "/run/php/php{{ nginx_config__vhost__php_fpm__unix_socket__php_version }}-{{ nginx_config__vhost__php_fpm__unix_socket__user }}.sock"
+nginx_config__vhost__php_fpm__unix_socket__listen: ""                        # For example: /var/run/php/php-fpm.sock
