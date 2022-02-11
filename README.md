@@ -12,6 +12,18 @@ Molecule testing:
 | RockyLinux 8     |   1.14.1           | nginx.org         |     Latest    | 
 | OracleLinux 8    |   1.14.1           | nginx.org         |     Latest    | 
 
+### Select all or specific task
+```bash
+ installation
+      ├── dependencies
+      ├── third-party repo
+ configuration
+      ├── nginx.conf
+      └── virtual host
+                ├── tcp/ip socket 
+                └── unix socket 
+
+```
 ### 1) Install role from Galaxy
 ```
 ansible-galaxy install darexsu.nginx --force
