@@ -8,12 +8,12 @@
   block:
     - name: import epel gpg key
       ansible.builtin.rpm_key:
-        key: "{{ nginx_install__epel__gpg_key }}"
+        key: "{{ nginx_install__repo__epel__gpg_key }}"
         state: present
 
     - name: add repository
       ansible.builtin.yum:
-        name: "{{ nginx_install__epel__rpm }}"
+        name: "{{ nginx_install__repo__epel__rpm }}"
         state: present
   when: nginx_install__repo__epel and nginx_install__repo
 
