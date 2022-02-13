@@ -1,42 +1,42 @@
 ---
 - name: ensure dependencies are installed.
   ansible.builtin.package:
-    name: "{{ nginx_install__dependencies_redhat }}"
+    name: "{{ nginx_install.dependencies.redhat }}"
     state: present    
 
 - name: add epel repo for redhat
   block:
     - name: import epel gpg key
       ansible.builtin.rpm_key:
-        key: "{{ nginx_install__repo__epel__gpg_key }}"
+        key: "{{ nginx_repo.epel.gpg }}"
         state: present
 
     - name: add repository
       ansible.builtin.yum:
-        name: "{{ nginx_install__repo__epel__rpm }}"
+        name: "{{ nginx_repo.epel.rpm }}"
         state: present
-  when: nginx_install__repo__epel and nginx_install__repo
+  when: nginx_repo.epel.enabled
 
 - name: add nginx repo for redhat
   block:
     - name: import nginx gpg key
       ansible.builtin.rpm_key:
-        key: "{{ nginx_install__repo__nginx__gpg_key }}"
+        key: "{{ nginx_repo.nginx.gpg }}"
         state: present
 
     - name: add nginx repository
       ansible.builtin.yum_repository:
         name: nginx
         description: nginx YUM repo
-        baseurl: "{{ nginx_install__repo__nginx__rpm }}"
+        baseurl: "{{ nginx_repo.nginx.rpm }}"
         gpgcheck: yes
         enabled: true
         module_hotfixes: true
-  when: nginx_install__repo__nginx and nginx_install__repo
+  when: nginx_repo.nginx.enabled
 
 - name: install nginx packages.
   ansible.builtin.package:
-    name: "{{ nginx_install__list }}"
+    name: "{{ nginx_install.packages }}"
     state: present   
     update_cache: true
   ignore_errors: yes

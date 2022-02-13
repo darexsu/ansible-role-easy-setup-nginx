@@ -1,7 +1,7 @@
 ---
 - name: ensure dependencies are installed.
   ansible.builtin.apt:
-    name: "{{ nginx_install__dependencies_debian }}"
+    name: "{{ nginx_install.dependencies.debian }}"
     state: present
     update_cache: true
 
@@ -9,18 +9,18 @@
   block:
     - name: add gpg key
       ansible.builtin.apt_key:
-        url: "{{ nginx_install__repo__nginx__gpg_key }}"
+        url: "{{ nginx_repo.nginx.gpg }}"
         state: present   
 
     - name: add nginx repo
       ansible.builtin.apt_repository:
-        repo: "{{ nginx_install__repo__nginx__deb }}"
+        repo: "{{ nginx_repo.nginx.deb }}"
         state: present
-  when: nginx_install__repo__nginx and nginx_install__repo
+  when: nginx_repo.nginx
 
 - name: install nginx packages.
   ansible.builtin.apt:
-    name: "{{ nginx_install__list }}"
+    name: "{{ nginx_install.packages }}"
     state: present
     update_cache: true
   ignore_errors: yes
@@ -38,4 +38,4 @@
   ansible.builtin.service:
     name: nginx
     state: started
-    enabled: yes
+    enabled: true

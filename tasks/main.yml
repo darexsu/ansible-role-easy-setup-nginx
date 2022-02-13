@@ -1,8 +1,25 @@
 ---
+- name: prepare dictionaries
+  set_fact:
+    update_vars: 
+      nginx_install: "{{ nginx_install }}"
+      nginx_repo: "{{ nginx_repo }}"
+      nginx_conf: "{{ nginx_conf }}"
+      nginx_virtualhost: "{{ nginx_virtualhost }}"
+
+- name: merge default and yours dictionaries 
+  set_fact:
+    "{{ item.key }}": "{{ update_vars[item.key] | combine( item.value, recursive=True) }}"
+  with_dict: "{{ dictionaries }}"
+
 - name: include nginx install
   include_tasks: ./tasks/install/nginx_install__{{ ansible_os_family | lower }}.yml
-  when: nginx_install
+  when: nginx_install.enabled
 
 - name: include nginx config
-  include_tasks: ./tasks/config/nginx_config.yml
-  when: nginx_config
+  include_tasks: ./tasks/config/nginx_conf.yml
+  when: nginx_conf.enabled
+
+- name: include nginx config
+  include_tasks: ./tasks/config/nginx_virtualhost.yml
+  when: nginx_virtualhost.enabled

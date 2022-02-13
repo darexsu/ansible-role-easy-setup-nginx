@@ -1,61 +1,69 @@
 ---
 # install
+#   ├── packages
 #   ├── dependencies
-#   └── repo
+#   └── repositories
 # config
-#   ├── nginx_conf
-#   └── vhost
+#   ├── /etc/nginx/nginx.conf
+#   └── virtualhost.conf
 #        ├── tcp\ip socket 
 #        └── unix socket 
 
-# --- install
-nginx_install: false                                                         # Enable\disable "install vars" below
-nginx_install__list: [nginx]                                                 # Install list
-# --- install  dependencies
-nginx_install__dependencies_debian: [apt-transport-https, ca-certificates, curl, gnupg2, lsb-release, debian-archive-keyring] 
-nginx_install__dependencies_redhat: []
-# --- install  repo
-nginx_install__repo: false                                                   # add extra repos
-nginx_install__repo__nginx: true
-nginx_install__repo__epel: true
+# Install
+nginx_install:
+  enabled: false
+  packages: [nginx]
+  dependencies:
+    debian: [apt-transport-https, ca-certificates, curl, gnupg2, lsb-release, debian-archive-keyring] 
+    redhat: []
 
-# --- config 
-nginx_config: false                                                          # Enable\disable "config vars" below
-# --- config  conf
-nginx_config__conf: false                                                    # Enable\disable "conf vars" below
-nginx_config__conf__template: "nginx_config_conf.j2"                         # Copy template
-nginx_config__conf__file: "nginx.conf"                                       # Paste template to
-nginx_config__conf__user: "www-data"                                         # Default: "nginx". User who start nginx
-nginx_config__conf__worker_processes: "auto"                                 # Default: "1".
-nginx_config__conf__error_log: "/var/log/nginx/error.log notice"             # Default: "logs/error.log error".
-nginx_config__conf__pidfile: "/var/run/nginx.pid"                            # Default: "logs/nginx.pid".
-nginx_config__conf__worker_connections: "1024"                               # Default: "512".
-nginx_config__conf__multi_accept: "off"                                      # Default: "off".
-nginx_config__conf__mime_file_path: "/etc/nginx/mime.types"                  # Default: "".
-nginx_config__conf__access_log: "/var/log/nginx/access.log"                  # Default: "logs/access.log combined".
-nginx_config__conf__sendfile: "off"                                          # Default: "off".
-nginx_config__conf__tcp_nopush: "off"                                        # Default: "off".
-nginx_config__conf__tcp_nodelay: "on"                                        # Default: "on".
-nginx_config__conf__keepalive_timeout: "75s"                                 # Default: "75s".
-nginx_config__conf__keepalive_requests: "1000"                               # Default: "1000".
-# --- config  vhost 
-nginx_config__vhost: false                                                   # Enable\disable "vhost vars" below
-# --- config  vhost  remove file
-nginx_config__vhost__remove_file: ""                                         # Remove config like "default.conf"
-# --- config  vhost  file
-nginx_config__vhost__file: "default.conf"                                    # Config path
-nginx_config__vhost__template: "nginx_config__vhost.j2"                      # Template path
-nginx_config__vhost__listen_port: "80"                                       # Default: "80". Listen port virtual host
-nginx_config__vhost__listen_ipv6: false                                      # Enable\disable ipv6
-nginx_config__vhost__server_name: "localhost"                                # Domen name
-nginx_config__vhost__root: "/usr/share/nginx/html"                           # Usually site directory
-nginx_config__vhost__index: "index.html index.htm index.php"                 # Default: "index index.html".
-nginx_config__vhost__error_page: ""                                          # Set error page
-nginx_config__vhost__access_log: false                                       # Enable\disable access log
-nginx_config__vhost__error_log: false                                        # Enable\disable error log
-# --- config  vhost  php-fpm  tcp_ip socket
-nginx_config__vhost__php_fpm__tcp_ip_socket: false                           # Enable\disable "tcp_ip vars" below
-nginx_config__vhost__php_fpm__tcp_ip_socket__listen: "127.0.0.1:9000"        # TCP\IP socket
-# --- config  vhost  php-fpm  unix_socket
-nginx_config__vhost__php_fpm__unix_socket: false                             # Enable\disable "unix socket vars" below
-nginx_config__vhost__php_fpm__unix_socket__listen: ""                        # For example: /var/run/php/php-fpm.sock
+
+# Install -> repository
+nginx_repo:  
+  nginx:
+    enabled: false
+  epel:
+    enabled: false
+
+# Config -> nginx.conf
+nginx_conf:
+  enabled: false
+  file: "nginx.conf"
+  from: "template"
+  src: "nginx_conf.j2"
+  vars:
+    user: "www-data"
+    worker_processes: "auto"
+    error_log: "/var/log/nginx/error.log notice"
+    pidfile: "/var/run/nginx.pid"
+    worker_connections: "1024"
+    multi_accept: "off"
+    mime_file_path: "/etc/nginx/mime.types"
+    access_log: "/var/log/nginx/access.log"
+    sendfile: "off"
+    tcp_nopush: "off"
+    tcp_nodelay: "on"
+    keepalive_timeout: "75s"
+    keepalive_requests: "1000"
+
+# Config -> {virtualhost}.conf
+nginx_virtualhost: 
+  enabled: false
+  file: [default.conf]
+  state: "present"
+  from: "template"
+  src: "nginx_virtualhost.j2"
+  vars:
+    listen_port: "80"
+    listen_ipv6: false
+    server_name: "localhost"
+    root: "/usr/share/nginx/html"
+    index: "index.html index.htm index.php"
+    error_page: ""
+    access_log: false
+    error_log: false
+    php_fpm:
+      tcp_ip_socket:
+        listen: ""
+      unix_socket:
+        listen: ""

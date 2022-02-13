@@ -1,0 +1,24 @@
+---
+- name: ensure nginx user exsist
+  ansible.builtin.user:
+    name: "{{ nginx_conf.vars.user }}"
+ 
+- name: copy nginx.conf to remote node
+  ansible.builtin.copy:
+    src: "{{ nginx_conf.src }}"
+    dest: "/etc/nginx/{{ nginx_conf.file }}"
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart nginx
+  when: nginx_conf.from == "file"
+
+- name: config ./nginx/nginx.conf
+  ansible.builtin.template:
+    src: nginx_conf.j2
+    dest: "/etc/nginx/{{ nginx_conf.file }}"
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart nginx
+  when: nginx_conf.from == "template"

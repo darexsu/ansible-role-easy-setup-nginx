@@ -1,6 +1,6 @@
 ---
 - name: Converge
-  hosts: all
+  hosts: all 
   become: true
  
   pre_tasks:
@@ -9,16 +9,44 @@
         cmd: "{{ lookup('env', 'ANSIBLE_COMMAND') }}"
       when: lookup('env', 'ANSIBLE_COMMAND') | length > 0
   
-  roles:
-    - role: darexsu.nginx
-      # install
-      nginx_install: true
-      # --- install  repo
-      nginx_install__repo: true  
-      
-      # config 
-      nginx_config: true
-      # config -> nginx.conf
-      nginx_config__conf: true
-      # config -> virtualhost
-      nginx_config__vhost: true
+  tasks:
+  - name: include role dare
+    include_role: 
+      name: darexsu.nginx
+    vars:
+      dictionaries:
+    # Install -> packages
+        nginx_install:
+          enabled: true
+          packages: [nginx]
+          dependencies:
+            debian: [apt-transport-https, ca-certificates, curl, gnupg2, lsb-release, debian-archive-keyring] 
+            redhat: []
+    # Install -> repository
+        nginx_repo:  
+          epel:
+            enabled: true
+          nginx:
+            enabled: true
+    # Config -> nginx.conf
+        nginx_conf:
+          enabled: true
+    # Config -> {virtualhost}.conf
+        nginx_virtualhost: 
+          enabled: true
+          file: [virtualhost.conf]
+          state: "present"
+          from: "template"
+          src: "nginx_virtualhost.j2"
+          vars:
+            listen_port: "80"
+            listen_ipv6: false
+            server_name: "localhost"
+            root: "/usr/share/nginx/html"
+            index: "index.html index.htm index.php"
+            error_page: ""
+            access_log: false
+            error_log: false
+            php_fpm:
+              tcp_ip_socket:
+                listen: "127.0.0.1:9000"

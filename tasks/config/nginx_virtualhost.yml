@@ -1,0 +1,32 @@
+---
+- name:
+  debug:
+    var: nginx_virtualhost.enabled
+- name: remove virtualhost.conf
+  ansible.builtin.file:
+    path: "/etc/nginx/conf.d/{{ nginx_virtualhost.file }}"
+    state: absent
+  when: nginx_virtualhost.state == "absent"
+  notify: restart nginx
+
+- name: copy config file to remote node
+  ansible.builtin.copy:
+    src: "{{ nginx_virtualhost.src }}"
+    dest: "/etc/nginx/conf.d/{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart nginx
+  with_items: "{{ nginx_virtualhost.file }}"
+  when: nginx_virtualhost.state == "present" and nginx_virtualhost.from == "file"
+
+- name: add config /conf.d/
+  ansible.builtin.template:
+    src: "{{ nginx_virtualhost.src }}"
+    dest: "/etc/nginx/conf.d/{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items: "{{ nginx_virtualhost.file }}"
+  when: nginx_virtualhost.state == "present" and nginx_virtualhost.from == "template"
+  notify: restart nginx

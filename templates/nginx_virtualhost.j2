@@ -1,0 +1,42 @@
+server {
+    listen       {{ nginx_virtualhost.vars.listen_port }};
+{% if nginx_virtualhost.vars.listen_ipv6 %}
+    listen       [::]:{{ nginx_virtualhost.vars.listen_port }} ipv6only=on default_server;
+{% endif %}
+{% if nginx_virtualhost.vars.server_name %}
+    server_name {{ nginx_virtualhost.vars.server_name }};
+{% endif %}
+{% if nginx_virtualhost.vars.root %}
+    root {{ nginx_virtualhost.vars.root }};
+{% endif %}
+
+    index {{ nginx_virtualhost.vars.index }};
+
+{% if nginx_virtualhost.vars.error_page  %}
+     {{ nginx_virtualhost.vars.error_page }};
+{% endif %}
+{% if nginx_virtualhost.vars.access_log %}
+    access_log /var/log/nginx/{{ nginx_virtualhost.vars.server_name }}.access.log main;
+{% endif %}
+{% if nginx_virtualhost.vars.error_log %}
+    error_log /var/log/nginx/{{ nginx_virtualhost.vars.server_name }}.error.log;
+{% endif %}
+
+{% if nginx_virtualhost.vars.php_fpm.tcp_ip_socket.listen or nginx_virtualhost.vars.php_fpm.unix_socket.listen %}
+location ~ \.php$ {
+
+        try_files $uri =404;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        {% if nginx_virtualhost.vars.php_fpm.tcp_ip_socket.listen %}
+        fastcgi_pass {{ nginx_virtualhost.vars.php_fpm.tcp_ip_socket.listen }};
+        {% endif %}
+        {% if nginx_virtualhost.vars.php_fpm.unix_socket.listen %}
+        fastcgi_pass unix:{{ nginx_virtualhost.vars.php_fpm.unix_socket.listen }};
+        {% endif %}
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+}
+{% endif %}
+
+}
