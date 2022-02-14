@@ -12,16 +12,38 @@ Molecule testing:
 | RockyLinux 8     |   1.14.1           | nginx.org         |     Latest    | 
 | OracleLinux 8    |   1.14.1           | nginx.org         |     Latest    | 
 
-### Select all or specific tasks
-```bash
-    install
-      ├── dependencies
-      └── third-party repo
-    config
-      ├── nginx.conf
-      └── virtualhost.conf
-                ├── tcp/ip socket 
-                └── unix socket 
+### You can Replace dictionaries
+```yaml
+---
+- hosts: all
+  become: yes
+
+  tasks:
+  - name: include role darexsu.nginx
+    include_role: 
+      name: darexsu.nginx
+    vars:
+    some_dict:              # <-- Replace dictionary
+      a: value
+      b: value
+      c: value
+```
+### You can Merge dictionaries (like hash_behaviour=merge)
+```yaml
+---
+- hosts: all
+  become: yes
+
+  tasks:
+  - name: include role darexsu.nginx
+    include_role: 
+      name: darexsu.nginx
+    vars:
+      merge_dictionaries:    # <-- Enable Merge dictionary
+        some_dict:
+          a: value
+          b: value
+          c: value
 
 ```
 ### 1) Install role from Galaxy
@@ -47,7 +69,7 @@ ansible-galaxy install darexsu.nginx --force
   become: true
 
   tasks:
-  - name: darexsu.nginx
+  - name: include role darexsu.nginx
     include_role: 
       name: darexsu.nginx
     vars:
@@ -95,7 +117,7 @@ ansible-galaxy install darexsu.nginx --force
   become: yes
 
   tasks:
-  - name: include role dare
+  - name: include role darexsu.nginx
     include_role: 
       name: darexsu.nginx
     vars:
@@ -112,7 +134,7 @@ ansible-galaxy install darexsu.nginx --force
   become: yes
 
   tasks:
-  - name: include role dare
+  - name: include role darexsu.nginx
     include_role: 
       name: darexsu.nginx
     vars:
@@ -135,7 +157,7 @@ ansible-galaxy install darexsu.nginx --force
   become: yes
 
   tasks:
-  - name: include role dare
+  - name: include role darexsu.nginx
     include_role: 
       name: darexsu.nginx
     vars:
@@ -158,7 +180,7 @@ ansible-galaxy install darexsu.nginx --force
   become: yes
 
   tasks:
-  - name: include role dare
+  - name: include role darexsu.nginx
     include_role: 
       name: darexsu.nginx
     vars:
@@ -190,7 +212,7 @@ ansible-galaxy install darexsu.nginx --force
   become: yes
 
   tasks:
-  - name: include role dare
+  - name: include role darexsu.nginx
     include_role: 
       name: darexsu.nginx
     vars:
