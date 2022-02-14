@@ -47,28 +47,46 @@ ansible-galaxy install darexsu.nginx --force
   become: true
 
   tasks:
-  - name: include role dare
+  - name: darexsu.nginx
     include_role: 
       name: darexsu.nginx
     vars:
-      dictionaries:
-    # Install -> packages
+      merge_dictionaries:
+        # Install -> packages
         nginx_install:
           enabled: true
           packages: [nginx]
-    # Install -> repository
+        # Install -> repository
         nginx_repo:  
           epel:
             enabled: true
           nginx:
             enabled: true
-    # Config -> nginx.conf
+        # Config -> nginx.conf
         nginx_conf:
           enabled: true
-    # Config -> {virtualhost}.conf
+          vars:
+            user: "www-data"
+            worker_processes: "auto"
+            error_log: "/var/log/nginx/error.log notice"
+            pidfile: "/var/run/nginx.pid"
+            worker_connections: "1024"
+        # Config -> {virtualhost}.conf
         nginx_virtualhost: 
           enabled: true
           file: [virtualhost.conf]
+          vars:
+            listen_port: "80"
+            listen_ipv6: false
+            server_name: "localhost"
+            root: "/usr/share/nginx/html"
+            index: "index.html index.htm index.php"
+            error_page: ""
+            access_log: false
+            error_log: false
+            php_fpm:
+              tcp_ip_socket:
+                listen: "127.0.0.1:9000"
 ```
 ##### Example playbook: install from distro's repo
 ```yaml
@@ -81,8 +99,8 @@ ansible-galaxy install darexsu.nginx --force
     include_role: 
       name: darexsu.nginx
     vars:
-      dictionaries:
-    # Install -> packages
+      merge_dictionaries:
+         # Install -> packages
         nginx_install:
           enabled: true
           packages: [nginx]
@@ -98,12 +116,12 @@ ansible-galaxy install darexsu.nginx --force
     include_role: 
       name: darexsu.nginx
     vars:
-      dictionaries:
-    # Install -> packages
+      merge_dictionaries:
+        # Install -> packages
         nginx_install:
           enabled: true
           packages: [nginx]
-    # Install -> repository
+        # Install -> repository
         nginx_repo:  
           epel:
             enabled: true
@@ -121,8 +139,8 @@ ansible-galaxy install darexsu.nginx --force
     include_role: 
       name: darexsu.nginx
     vars:
-      dictionaries:
-    # Config -> nginx.conf
+      merge_dictionaries:
+        # Config -> nginx.conf
         nginx_conf:
           enabled: true
           vars:
@@ -144,11 +162,11 @@ ansible-galaxy install darexsu.nginx --force
     include_role: 
       name: darexsu.nginx
     vars:
-      dictionaries:
-    # Config -> {virtualhost}.conf
+      merge_dictionaries:
+        # Config -> {virtualhost}.conf
         nginx_virtualhost: 
-          enabled: false
-          file: []
+          enabled: true
+          file: [virtualhost.conf]
           state: "present"
           from: "template"
           src: "nginx_virtualhost.j2"
@@ -176,11 +194,11 @@ ansible-galaxy install darexsu.nginx --force
     include_role: 
       name: darexsu.nginx
     vars:
-      dictionaries:
-    # Config -> {virtualhost}.conf
+      merge_dictionaries:
+        # Config -> {virtualhost}.conf
         nginx_virtualhost: 
-          enabled: false
-          file: []
+          enabled: true
+          file: [virtualhost.conf]
           state: "present"
           from: "template"
           src: "nginx_virtualhost.j2"

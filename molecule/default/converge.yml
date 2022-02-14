@@ -1,7 +1,6 @@
 ---
 - name: Converge
-  hosts: all 
-  become: true
+  hosts: all  
  
   pre_tasks:
     - name: Unnessessary command
@@ -10,34 +9,34 @@
       when: lookup('env', 'ANSIBLE_COMMAND') | length > 0
   
   tasks:
-  - name: include role dare
+  - name: 1 start role darexsu.nginx
     include_role: 
       name: darexsu.nginx
     vars:
-      dictionaries:
-    # Install -> packages
+      merge_dictionaries:
+        # Install -> packages
         nginx_install:
           enabled: true
           packages: [nginx]
-          dependencies:
-            debian: [apt-transport-https, ca-certificates, curl, gnupg2, lsb-release, debian-archive-keyring] 
-            redhat: []
-    # Install -> repository
+        # Install -> repository
         nginx_repo:  
           epel:
             enabled: true
           nginx:
             enabled: true
-    # Config -> nginx.conf
+        # Config -> nginx.conf
         nginx_conf:
           enabled: true
-    # Config -> {virtualhost}.conf
+          vars:
+            user: "www-data"
+            worker_processes: "auto"
+            error_log: "/var/log/nginx/error.log notice"
+            pidfile: "/var/run/nginx.pid"
+            worker_connections: "1024"
+        # Config -> {virtualhost}.conf
         nginx_virtualhost: 
           enabled: true
           file: [virtualhost.conf]
-          state: "present"
-          from: "template"
-          src: "nginx_virtualhost.j2"
           vars:
             listen_port: "80"
             listen_ipv6: false
@@ -50,3 +49,14 @@
             php_fpm:
               tcp_ip_socket:
                 listen: "127.0.0.1:9000"
+
+  - name: 2 remove default.conf
+    include_role: 
+      name: darexsu.nginx
+    vars:
+      merge_dictionaries:
+        # Config -> {virtualhost}.conf
+        nginx_virtualhost: 
+          enabled: true
+          file: ["default.conf"]
+          state: "absent"

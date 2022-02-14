@@ -4,7 +4,7 @@
 #   ├── dependencies
 #   └── repositories
 # config
-#   ├── /etc/nginx/nginx.conf
+#   ├── nginx.conf
 #   └── virtualhost.conf
 #        ├── tcp\ip socket 
 #        └── unix socket 
@@ -17,13 +17,17 @@ nginx_install:
     debian: [apt-transport-https, ca-certificates, curl, gnupg2, lsb-release, debian-archive-keyring] 
     redhat: []
 
-
 # Install -> repository
-nginx_repo:  
+nginx_repo:
   nginx:
     enabled: false
+    deb: "deb http://nginx.org/packages/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} nginx"
+    rpm: "http://nginx.org/packages/rhel/$releasever/$basearch/"
+    gpg: "https://nginx.org/keys/nginx_signing.key"
   epel:
     enabled: false
+    rpm: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
+    gpg: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}"
 
 # Config -> nginx.conf
 nginx_conf:
@@ -51,7 +55,6 @@ nginx_virtualhost:
   enabled: false
   file: [default.conf]
   state: "present"
-  from: "template"
   src: "nginx_virtualhost.j2"
   vars:
     listen_port: "80"
