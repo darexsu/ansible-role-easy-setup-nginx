@@ -44,24 +44,49 @@ ansible-galaxy install darexsu.nginx --force
 ```yaml
 ---
 - hosts: all
-  become: yes
+  become: true
 
-  roles:
-    - role: darexsu.nginx
-      # install
-      nginx_install: true
-      # --- install  repo
-      nginx_install__repo: true       
-      
-      # config 
-      nginx_config: true
-      # --- config  conf
-      nginx_config__conf: true
-      # --- config  vhost 
-      nginx_config__vhost: true
-      # --- config  vhost  php_fpm
-      nginx_config__vhost__php_fpm__tcp_ip_socket: true
-      nginx_config__vhost__php_fpm__tcp_ip_socket__listen: "127.0.0.1:9000"
+  tasks:
+  - name: darexsu.nginx
+    include_role: 
+      name: darexsu.nginx
+    vars:
+      merge_dictionaries:
+        # Install -> packages
+        nginx_install:
+          enabled: true
+          packages: [nginx]
+        # Install -> repository
+        nginx_repo:  
+          epel:
+            enabled: true
+          nginx:
+            enabled: true
+        # Config -> nginx.conf
+        nginx_conf:
+          enabled: true
+          vars:
+            user: "www-data"
+            worker_processes: "auto"
+            error_log: "/var/log/nginx/error.log notice"
+            pidfile: "/var/run/nginx.pid"
+            worker_connections: "1024"
+        # Config -> {virtualhost}.conf
+        nginx_virtualhost: 
+          enabled: true
+          file: [virtualhost.conf]
+          vars:
+            listen_port: "80"
+            listen_ipv6: false
+            server_name: "localhost"
+            root: "/usr/share/nginx/html"
+            index: "index.html index.htm index.php"
+            error_page: ""
+            access_log: false
+            error_log: false
+            php_fpm:
+              tcp_ip_socket:
+                listen: "127.0.0.1:9000"
 ```
 ##### Example playbook: install from distro's repo
 ```yaml
@@ -69,10 +94,16 @@ ansible-galaxy install darexsu.nginx --force
 - hosts: all
   become: yes
 
-  roles:
-    - role: darexsu.nginx
-      # install
-      nginx_install: true
+  tasks:
+  - name: include role dare
+    include_role: 
+      name: darexsu.nginx
+    vars:
+      merge_dictionaries:
+         # Install -> packages
+        nginx_install:
+          enabled: true
+          packages: [nginx]
 ```
 ##### Example playbook: install from nginx.org repo
 ```yaml
@@ -80,12 +111,22 @@ ansible-galaxy install darexsu.nginx --force
 - hosts: all
   become: yes
 
-  roles:
-    - role: darexsu.nginx
-      # install
-      nginx_install: true
-      # --- install  repo
-      nginx_install__repo: true
+  tasks:
+  - name: include role dare
+    include_role: 
+      name: darexsu.nginx
+    vars:
+      merge_dictionaries:
+        # Install -> packages
+        nginx_install:
+          enabled: true
+          packages: [nginx]
+        # Install -> repository
+        nginx_repo:  
+          epel:
+            enabled: true
+          nginx:
+            enabled: true
 ```
 ##### Example playbook: nginx.conf
 ```yaml
@@ -93,14 +134,22 @@ ansible-galaxy install darexsu.nginx --force
 - hosts: all
   become: yes
 
-  roles:
-    - role: darexsu.nginx
-      # --- config 
-      nginx_config: true
-      # --- config  conf
-      nginx_config__conf: true
-      nginx_config__conf__template: "nginx_config_conf.j2"
-      nginx_config__conf__file: "nginx.conf"
+  tasks:
+  - name: include role dare
+    include_role: 
+      name: darexsu.nginx
+    vars:
+      merge_dictionaries:
+        # Config -> nginx.conf
+        nginx_conf:
+          enabled: true
+          vars:
+            user: "www-data"
+            worker_processes: "auto"
+            error_log: "/var/log/nginx/error.log notice"
+            pidfile: "/var/run/nginx.pid"
+            worker_connections: "1024"
+
 ```
 ##### Example playbook: virtualhost.conf tcp/ip
 ```yaml
@@ -108,19 +157,31 @@ ansible-galaxy install darexsu.nginx --force
 - hosts: all
   become: yes
 
-  roles:
-    - role: darexsu.nginx
-      # config
-      nginx_config: true
-      # --- config  vhost 
-      nginx_config__vhost: true
-      nginx_config__vhost__template: "nginx_config__vhost.j2"
-      nginx_config__vhost__file: "default.conf"
-      nginx_config__vhost__listen_port: "80"
-      nginx_config__vhost__server_name: "localhost"
-      # --- config  vhost  php-fpm  tcp_ip socket
-      nginx_config__vhost__php_fpm__tcp_ip_socket: true
-      nginx_config__vhost__php_fpm__tcp_ip_socket__listen: "127.0.0.1:9000"
+  tasks:
+  - name: include role dare
+    include_role: 
+      name: darexsu.nginx
+    vars:
+      merge_dictionaries:
+        # Config -> {virtualhost}.conf
+        nginx_virtualhost: 
+          enabled: true
+          file: [virtualhost.conf]
+          state: "present"
+          from: "template"
+          src: "nginx_virtualhost.j2"
+          vars:
+            listen_port: "80"
+            listen_ipv6: false
+            server_name: "localhost"
+            root: "/usr/share/nginx/html"
+            index: "index.html index.htm index.php"
+            error_page: ""
+            access_log: false
+            error_log: false
+            php_fpm:
+              tcp_ip_socket:
+                listen: "127.0.0.1:9000"
 ```
 ##### Example playbook: virtualhost.conf unix
 ```yaml
@@ -128,17 +189,29 @@ ansible-galaxy install darexsu.nginx --force
 - hosts: all
   become: yes
 
-  roles:
-    - role: darexsu.nginx
-      # config
-      nginx_config: true
-      # --- config  vhost 
-      nginx_config__vhost: true
-      nginx_config__vhost__template: "nginx_config__vhost.j2"
-      nginx_config__vhost__file: "default.conf"
-      nginx_config__vhost__listen_port: "80"
-      nginx_config__vhost__server_name: "localhost"
-      # --- config  vhost  php-fpm  unix_socket
-      nginx_config__vhost__php_fpm__unix_socket: true
-      nginx_config__vhost__php_fpm__unix_socket__listen: "/var/run/php/php-fpm.sock"
+  tasks:
+  - name: include role dare
+    include_role: 
+      name: darexsu.nginx
+    vars:
+      merge_dictionaries:
+        # Config -> {virtualhost}.conf
+        nginx_virtualhost: 
+          enabled: true
+          file: [virtualhost.conf]
+          state: "present"
+          from: "template"
+          src: "nginx_virtualhost.j2"
+          vars:
+            listen_port: "80"
+            listen_ipv6: false
+            server_name: "localhost"
+            root: "/usr/share/nginx/html"
+            index: "index.html index.htm index.php"
+            error_page: ""
+            access_log: false
+            error_log: false
+            php_fpm:
+              unix_socket:
+                listen: "/var/run/php7.4-fpm.sock"
 ```
