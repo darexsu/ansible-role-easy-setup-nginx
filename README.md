@@ -190,7 +190,6 @@ ansible-galaxy install darexsu.nginx --force
           enabled: true
           file: [virtualhost.conf]
           state: "present"
-          from: "template"
           src: "nginx_virtualhost.j2"
           vars:
             listen_port: "80"
@@ -222,7 +221,6 @@ ansible-galaxy install darexsu.nginx --force
           enabled: true
           file: [virtualhost.conf]
           state: "present"
-          from: "template"
           src: "nginx_virtualhost.j2"
           vars:
             listen_port: "80"
