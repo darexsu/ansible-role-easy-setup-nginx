@@ -39,10 +39,10 @@ Molecule testing:
     include_role: 
       name: darexsu.nginx
     vars:
-    some_dict:              # <-- Replace dictionary
-      a: value
-      b: value
-      c: value
+      some_dict:              # <-- Replace dictionary
+        a: value
+        b: value
+        c: value
 ```
 ### You can Merge dictionaries (like hash_behaviour=merge)
 ```yaml
