@@ -10,7 +10,7 @@ ansible-galaxy install darexsu.nginx --force
   
   - [full playbook](#full-playbook)  
     - install
-      - [official repo](#example-playbook-install-from-distros-repo)
+      - [official repo](#example-playbook-install-from-official-repo)
       - [third-party repo](#example-playbook-install-from-nginxorg-repo)   
     - config
       - [nginx.conf](#example-playbook-nginxconf)
@@ -28,38 +28,24 @@ Molecule testing:
 | RockyLinux 8     |   nginx.org         |
 | OracleLinux 8    |   nginx.org         |
 
-### You can Replace dictionaries
+### Role hash_behaviour: Replace with defaults dictionaries
 ```yaml
 ---
-- hosts: all
-  become: yes
-
-  tasks:
-  - name: include role darexsu.nginx
-    include_role: 
-      name: darexsu.nginx
     vars:
-    some_dict:              # <-- Replace dictionary
-      a: value
-      b: value
-      c: value
+      dict:           # <-- Replace default dictionary
+        a: my value
+        b: my value
+        c: my value
 ```
-### You can Merge dictionaries (like hash_behaviour=merge)
+### Role hash_behaviour: Merge with default dictionaries
 ```yaml
 ---
-- hosts: all
-  become: yes
-
-  tasks:
-  - name: include role darexsu.nginx
-    include_role: 
-      name: darexsu.nginx
     vars:
-      merge_dictionaries:    # <-- Enable Merge dictionary
-        some_dict:
-          a: value
-          b: value
-          c: value
+      nginx_merge:    # <-- Merge with default dictionary
+        dict:
+          a: my value
+          b: my value
+          c: my value
 
 ```
 ##### Full playbook
@@ -68,170 +54,171 @@ Molecule testing:
 - hosts: all
   become: true
 
+  vars:
+    nginx_merge:
+      nginx_install:
+        enabled: true
+        packages: [nginx]
+      nginx_repo:  
+        epel:
+          enabled: true
+        nginx:
+          enabled: true
+      nginx_conf:
+        enabled: true
+        vars:
+          user: "www-data"
+          worker_processes: "auto"
+          error_log: "/var/log/nginx/error.log notice"
+          pidfile: "/var/run/nginx.pid"
+          worker_connections: "1024"
+      nginx_virtualhost: 
+        enabled: true
+        file: [virtualhost.conf]
+        vars:
+          listen_port: "80"
+          listen_ipv6: false
+          server_name: "localhost"
+          root: "/usr/share/nginx/html"
+          index: "index.html index.htm index.php"
+          error_page: ""
+          access_log: false
+          error_log: false
+          php_fpm:
+            tcp_ip_socket:
+              listen: "127.0.0.1:9000"
+  
   tasks:
   - name: include role darexsu.nginx
-    include_role: 
+    include_role:
       name: darexsu.nginx
-    vars:
-      merge_dictionaries:
-        # Install -> packages
-        nginx_install:
-          enabled: true
-          packages: [nginx]
-        # Install -> repository
-        nginx_repo:  
-          epel:
-            enabled: true
-          nginx:
-            enabled: true
-        # Config -> nginx.conf
-        nginx_conf:
-          enabled: true
-          vars:
-            user: "www-data"
-            worker_processes: "auto"
-            error_log: "/var/log/nginx/error.log notice"
-            pidfile: "/var/run/nginx.pid"
-            worker_connections: "1024"
-        # Config -> {virtualhost}.conf
-        nginx_virtualhost: 
-          enabled: true
-          file: [virtualhost.conf]
-          vars:
-            listen_port: "80"
-            listen_ipv6: false
-            server_name: "localhost"
-            root: "/usr/share/nginx/html"
-            index: "index.html index.htm index.php"
-            error_page: ""
-            access_log: false
-            error_log: false
-            php_fpm:
-              tcp_ip_socket:
-                listen: "127.0.0.1:9000"
+    
 ```
-##### Example playbook: install from distro's repo
+##### Example playbook: install from official repo
 ```yaml
 ---
 - hosts: all
-  become: yes
+  become: true
 
+  vars:
+    nginx_merge:
+      nginx_install:
+        enabled: true
+        packages: [nginx]
+  
   tasks:
   - name: include role darexsu.nginx
     include_role: 
       name: darexsu.nginx
-    vars:
-      merge_dictionaries:
-         # Install -> packages
-        nginx_install:
-          enabled: true
-          packages: [nginx]
+
 ```
 ##### Example playbook: install from nginx.org repo
 ```yaml
 ---
 - hosts: all
-  become: yes
+  become: true
 
+  vars:
+    nginx_merge:
+      nginx_install:
+        enabled: true
+        packages: [nginx]
+      nginx_repo:  
+        epel:
+          enabled: true
+        nginx:
+          enabled: true
+  
   tasks:
   - name: include role darexsu.nginx
     include_role: 
       name: darexsu.nginx
-    vars:
-      merge_dictionaries:
-        # Install -> packages
-        nginx_install:
-          enabled: true
-          packages: [nginx]
-        # Install -> repository
-        nginx_repo:  
-          epel:
-            enabled: true
-          nginx:
-            enabled: true
+    
 ```
 ##### Example playbook: nginx.conf
 ```yaml
 ---
 - hosts: all
-  become: yes
+  become: true
 
+  vars:
+    nginx_merge:
+      nginx_conf:
+        enabled: true
+        vars:
+          user: "www-data"
+          worker_processes: "auto"
+          error_log: "/var/log/nginx/error.log notice"
+          pidfile: "/var/run/nginx.pid"
+          worker_connections: "1024"
+  
   tasks:
   - name: include role darexsu.nginx
     include_role: 
       name: darexsu.nginx
-    vars:
-      merge_dictionaries:
-        # Config -> nginx.conf
-        nginx_conf:
-          enabled: true
-          vars:
-            user: "www-data"
-            worker_processes: "auto"
-            error_log: "/var/log/nginx/error.log notice"
-            pidfile: "/var/run/nginx.pid"
-            worker_connections: "1024"
+    
 
 ```
 ##### Example playbook: virtualhost.conf tcp/ip
 ```yaml
 ---
 - hosts: all
-  become: yes
+  become: true
 
+  vars:
+    nginx_merge:
+      nginx_virtualhost: 
+        enabled: true
+        file: [virtualhost.conf]
+        state: "present"
+        src: "nginx_virtualhost.j2"
+        vars:
+          listen_port: "80"
+          listen_ipv6: false
+          server_name: "localhost"
+          root: "/usr/share/nginx/html"
+          index: "index.html index.htm index.php"
+          error_page: ""
+          access_log: false
+          error_log: false
+          php_fpm:
+            tcp_ip_socket:
+              listen: "127.0.0.1:9000"
+  
   tasks:
   - name: include role darexsu.nginx
     include_role: 
       name: darexsu.nginx
-    vars:
-      merge_dictionaries:
-        # Config -> {virtualhost}.conf
-        nginx_virtualhost: 
-          enabled: true
-          file: [virtualhost.conf]
-          state: "present"
-          src: "nginx_virtualhost.j2"
-          vars:
-            listen_port: "80"
-            listen_ipv6: false
-            server_name: "localhost"
-            root: "/usr/share/nginx/html"
-            index: "index.html index.htm index.php"
-            error_page: ""
-            access_log: false
-            error_log: false
-            php_fpm:
-              tcp_ip_socket:
-                listen: "127.0.0.1:9000"
+    
 ```
 ##### Example playbook: virtualhost.conf unix
 ```yaml
 ---
 - hosts: all
-  become: yes
+  become: true
 
+  vars:
+    nginx_merge:
+      nginx_virtualhost: 
+        enabled: true
+        file: [virtualhost.conf]
+        state: "present"
+        src: "nginx_virtualhost.j2"
+        vars:
+          listen_port: "80"
+          listen_ipv6: false
+          server_name: "localhost"
+          root: "/usr/share/nginx/html"
+          index: "index.html index.htm index.php"
+          error_page: ""
+          access_log: false
+          error_log: false
+          php_fpm:
+            unix_socket:
+              listen: "/var/run/php/php7.4-fpm.sock"
+  
   tasks:
   - name: include role darexsu.nginx
     include_role: 
-      name: darexsu.nginx
-    vars:
-      merge_dictionaries:
-        # Config -> {virtualhost}.conf
-        nginx_virtualhost: 
-          enabled: true
-          file: [virtualhost.conf]
-          state: "present"
-          src: "nginx_virtualhost.j2"
-          vars:
-            listen_port: "80"
-            listen_ipv6: false
-            server_name: "localhost"
-            root: "/usr/share/nginx/html"
-            index: "index.html index.htm index.php"
-            error_page: ""
-            access_log: false
-            error_log: false
-            php_fpm:
-              unix_socket:
-                listen: "/var/run/php7.4-fpm.sock"
+      name: darexsu.nginx    
 ```

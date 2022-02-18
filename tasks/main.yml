@@ -1,18 +1,16 @@
 ---
-- name: prepare dictionaries
-  set_fact:
-    update_vars: 
-      nginx_install: "{{ nginx_install }}"
-      nginx_repo: "{{ nginx_repo }}"
-      nginx_conf: "{{ nginx_conf }}"
-      nginx_virtualhost: "{{ nginx_virtualhost }}"
-  when: merge_dictionaries is defined 
+- name: merge dictionaries
+  block:
+  - name: register default vars
+    include_vars:   
+      dir: "{{ role_path }}/defaults/"
+      name: nginx_default_vars    
 
-- name: merge default and yours dictionaries 
-  set_fact:
-    "{{ item.key }}": "{{ update_vars[item.key] | combine( item.value, recursive=True) }}"
-  with_dict: "{{ merge_dictionaries }}"
-  when: merge_dictionaries is defined
+  - name: merge default and new dictionaries 
+    set_fact:
+      "{{ item.key }}": "{{ nginx_default_vars[item.key] | combine(nginx_merge[item.key], recursive=True)}}"
+    with_dict: "{{ nginx_merge }}"
+  when: nginx_merge is defined
 
 - name: include nginx install
   include_tasks: ./tasks/install/nginx_install__{{ ansible_os_family | lower }}.yml

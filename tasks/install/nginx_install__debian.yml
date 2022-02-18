@@ -23,7 +23,7 @@
     name: "{{ nginx_install.packages }}"
     state: present
     update_cache: true
-  ignore_errors: yes
+  ignore_errors: true
 
 - name: service facts
   ansible.builtin.service_facts:
