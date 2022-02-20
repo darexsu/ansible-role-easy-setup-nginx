@@ -1,15 +1,20 @@
 ---
-# install
-#   ├── packages
-#   ├── dependencies
-#   └── repositories
-# config
-#   ├── nginx.conf
-#   └── virtualhost.conf
-#        ├── tcp\ip socket 
-#        └── unix socket 
+# global
+#  ├── install
+#  |    ├── packages
+#  |    ├── dependencies
+#  |    └── repositories
+#  └── config
+#       ├── nginx.conf
+#       └── virtualhost.conf
+#             ├── tcp\ip socket 
+#             └── unix socket 
 
-# Install
+# global
+nginx:
+  enabled: false
+
+# global -> install
 nginx_install:
   enabled: false
   packages: [nginx]
@@ -17,10 +22,11 @@ nginx_install:
     debian: [apt-transport-https, ca-certificates, curl, gnupg2, lsb-release, debian-archive-keyring] 
     redhat: []
 
-# Install -> repository
+# global -> install -> repository
 nginx_repo:
+  enabled: false
   nginx:
-    enabled: false
+    enabled: true
     deb: "deb http://nginx.org/packages/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} nginx"
     rpm: "http://nginx.org/packages/rhel/$releasever/$basearch/"
     gpg: "https://nginx.org/keys/nginx_signing.key"
@@ -29,11 +35,12 @@ nginx_repo:
     rpm: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
     gpg: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}"
 
-# Config -> nginx.conf
+# global -> config -> nginx.conf
 nginx_conf:
   enabled: false
   file: "nginx.conf"
   src: "nginx_conf.j2"
+  backup: false
   vars:
     user: "www-data"
     worker_processes: "auto"
@@ -49,12 +56,14 @@ nginx_conf:
     keepalive_timeout: "75s"
     keepalive_requests: "1000"
 
-# Config -> {virtualhost}.conf
+# global -> config -> {virtualhost}.conf
 nginx_virtualhost: 
   enabled: false
-  file: [default.conf]
+  file: "default.conf"
   state: "present"
   src: "nginx_virtualhost.j2"
+  backup: false
+  remove_default: false
   vars:
     listen_port: "80"
     listen_ipv6: false
@@ -66,6 +75,8 @@ nginx_virtualhost:
     error_log: false
     php_fpm:
       tcp_ip_socket:
-        listen: ""
+        enabled: false
+        ip: ""
       unix_socket:
-        listen: ""
+        enabled: false
+        file: ""

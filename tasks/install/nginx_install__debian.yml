@@ -16,7 +16,7 @@
       ansible.builtin.apt_repository:
         repo: "{{ nginx_repo.nginx.deb }}"
         state: present
-  when: nginx_repo.nginx
+  when: nginx_repo.enabled and nginx_repo.nginx.enabled
 
 - name: install nginx packages.
   ansible.builtin.apt:

@@ -10,4 +10,5 @@
     owner: root
     group: root
     mode: 0644
+    backup: "{{ nginx_conf.backup }}"
   notify: restart nginx
