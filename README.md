@@ -55,7 +55,9 @@ Role recursive merge:
   become: true
 
   vars:
-    nginx_merge:
+    merge:
+      nginx:
+        enabled: true
       nginx_install:
         enabled: true
         packages: [nginx]
@@ -101,7 +103,9 @@ Role recursive merge:
   become: true
 
   vars:
-    nginx_merge:
+    merge:
+      nginx:
+        enabled: true
       nginx_install:
         enabled: true
         packages: [nginx]
@@ -119,7 +123,9 @@ Role recursive merge:
   become: true
 
   vars:
-    nginx_merge:
+    merge:
+      nginx:
+        enabled: true
       nginx_install:
         enabled: true
         packages: [nginx]
@@ -142,7 +148,9 @@ Role recursive merge:
   become: true
 
   vars:
-    nginx_merge:
+    merge:
+      nginx:
+        enabled: true
       nginx_conf:
         enabled: true
         vars:
@@ -166,7 +174,9 @@ Role recursive merge:
   become: true
 
   vars:
-    nginx_merge:
+    merge:
+      nginx:
+        enabled: true
       nginx_virtualhost: 
         enabled: true
         file: [virtualhost.conf]
@@ -198,7 +208,9 @@ Role recursive merge:
   become: true
 
   vars:
-    nginx_merge:
+    merge:
+      nginx:
+        enabled: true
       nginx_virtualhost: 
         enabled: true
         file: [virtualhost.conf]

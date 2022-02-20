@@ -9,7 +9,9 @@
       when: lookup('env', 'ANSIBLE_COMMAND') | length > 0
   
   vars:
-    nginx_merge:
+    merge:
+      nginx:
+        enabled: true
       nginx_install:
         enabled: true
         packages: [nginx]
