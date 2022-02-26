@@ -70,7 +70,7 @@ Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
           worker_connections: "1024"
       nginx_virtualhost: 
         enabled: true
-        file: [virtualhost.conf]
+        file: "virtualhost.conf"
         vars:
           listen_port: "80"
           listen_ipv6: false
@@ -173,7 +173,7 @@ Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
         enabled: true
       nginx_virtualhost: 
         enabled: true
-        file: [virtualhost.conf]
+        file: "virtualhost.conf"
         state: "present"
         src: "nginx_virtualhost.j2"
         vars:
@@ -207,7 +207,7 @@ Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
         enabled: true
       nginx_virtualhost: 
         enabled: true
-        file: [virtualhost.conf]
+        file: "virtualhost.conf"
         state: "present"
         src: "nginx_virtualhost.j2"
         vars:
