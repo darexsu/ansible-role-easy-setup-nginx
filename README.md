@@ -1,6 +1,11 @@
 # Ansible role Nginx
 [![CI Molecule](https://github.com/darexsu/ansible-role-nginx/actions/workflows/ci.yml/badge.svg)](https://github.com/darexsu/ansible-role-nginx/actions/workflows/ci.yml)&emsp;![](https://img.shields.io/static/v1?label=idempotence&message=ok&color=success)&emsp;![Ansible Role](https://img.shields.io/ansible/role/d/57564?color=blue&label=downloads)
 
+|  Testing         |  Debian            |  Ubuntu         |  Rocky Linux  | Oracle Linux |
+| :--------------: | :----------------: | :-------------: | :-----------: | :----------: |
+| Distro version   |  10, 11            | 18.04, 20.04    |  8            | 8            |
+| Third-party repo |  nginx.org         |   nginx.org     |   nginx.org   |  nginx.org   | 
+
 ### 1) Install role from Galaxy
 ```
 ansible-galaxy install darexsu.nginx --force
