@@ -33,18 +33,19 @@ Molecule testing:
 | RockyLinux 8     |   nginx.org         |
 | OracleLinux 8    |   nginx.org         |
 
-Replace dictionary and Merge dictionary (with "hash_behaviour=replace" in ansible.cfg):
+Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
 ```
+# Replace             # Merge
 [host_vars]           [host_vars]
 ---                   ---
   vars:                 vars:
-    dict:                 merge:  <-- # Enable Merge
+    dict:                 merge:
       a: "value"            dict: 
       b: "value"              a: "value" 
                               b: "value"
-```
-Role recursive merge:
-```
+
+# Role recursive merge:
+
 [host_vars]     [current role]    [include_role]
   
   dict:          dict:              dict:
