@@ -22,17 +22,6 @@ ansible-galaxy install darexsu.nginx --force
       - [virtualhost.conf tcp/ip socket](#example-playbook-virtualhostconf-tcpip)
       - [virtualhost.conf unix socket](#example-playbook-virtualhostconf-unix)
 
-Molecule testing:
-
-|  Official repo   |  Third-Party repo   |
-| ---------------- | ------------------- | 
-| Debian 11        |   nginx.org         |
-| Debian 10        |   nginx.org         |
-| Ubuntu 20.04     |   nginx.org         |
-| Ubuntu 18.04     |   nginx.org         |
-| RockyLinux 8     |   nginx.org         |
-| OracleLinux 8    |   nginx.org         |
-
 Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
 ```
 # Replace             # Merge
@@ -45,7 +34,6 @@ Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
                               b: "value"
 
 # Role recursive merge:
-
 [host_vars]     [current role]    [include_role]
   
   dict:          dict:              dict:
