@@ -31,9 +31,3 @@
 - name: include nginx config
   include_tasks: ./tasks/config/nginx_virtualhost.yml
   when: nginx_virtualhost.enabled
-
-- name: reset dictionaries to default
-  set_fact:
-    "{{ item.key }}": "{{ update_vars[item.key] | combine( item.value, recursive=True) }}"
-  with_dict: "{{ update_vars }}"
-  when: merge_dictionaries is defined
