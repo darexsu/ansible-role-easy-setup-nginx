@@ -185,7 +185,6 @@ Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
     # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             Nginx 
       nginx:
         enabled: true
-<<<<<<< HEAD
         src: "distribution"
     # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             virtualhosts
       nginx_virtualhost:
@@ -206,25 +205,6 @@ Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
             access_log: false
             error_log: false
             fastcgi_pass: "127.0.0.1:9000"
-=======
-      nginx_virtualhost: 
-        enabled: true
-        file: "virtualhost.conf"
-        state: "present"
-        src: "nginx_virtualhost.j2"
-        vars:
-          listen_port: "80"
-          listen_ipv6: false
-          server_name: "localhost"
-          root: "/usr/share/nginx/html"
-          index: "index.html index.htm index.php"
-          error_page: ""
-          access_log: false
-          error_log: false
-          php_fpm:
-            tcp_ip_socket:
-              listen: "127.0.0.1:9000"
->>>>>>> 2abc593b52179cb8ff7fdf3e374d8c34887741d1
   
   tasks:
   - name: include role darexsu.nginx
@@ -243,7 +223,6 @@ Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
     # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             Nginx 
       nginx:
         enabled: true
-<<<<<<< HEAD
         src: "distribution"
     # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             virtualhosts
       nginx_virtualhost:
@@ -264,25 +243,6 @@ Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
             access_log: false
             error_log: false
             fastcgi_pass: "unix:/var/run/php/php7.4-fpm.sock"
-=======
-      nginx_virtualhost: 
-        enabled: true
-        file: "virtualhost.conf"
-        state: "present"
-        src: "nginx_virtualhost.j2"
-        vars:
-          listen_port: "80"
-          listen_ipv6: false
-          server_name: "localhost"
-          root: "/usr/share/nginx/html"
-          index: "index.html index.htm index.php"
-          error_page: ""
-          access_log: false
-          error_log: false
-          php_fpm:
-            unix_socket:
-              listen: "/var/run/php/php7.4-fpm.sock"
->>>>>>> 2abc593b52179cb8ff7fdf3e374d8c34887741d1
   
   tasks:
   - name: include role darexsu.nginx
