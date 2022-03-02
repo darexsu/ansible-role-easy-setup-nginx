@@ -41,4 +41,4 @@
     name: nginx
     state: "{{ nginx_service['state'] }}"
     enabled: "{{ nginx_service.enabled }}"
-  when: ansible_facts.services is search(nginx)
+  when: ansible_facts.services is search("nginx")
