@@ -3,8 +3,3 @@
   ansible.builtin.service:
     name: nginx
     state: restarted
-
-- name: restart firewalld
-  ansible.builtin.service:
-    name: firewalld
-    state: restarted

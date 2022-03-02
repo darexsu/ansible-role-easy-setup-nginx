@@ -1,0 +1,21 @@
+---
+- debug: 
+    msg: "edit {{ nginx_virtualhost[item.key]['file'] }}"
+
+- name: remove virtualhost.conf
+  ansible.builtin.file:
+    path: "/etc/nginx/conf.d/{{ nginx_virtualhost[item.key]['file'] }}"
+    state: absent
+  when: nginx_virtualhost[item.key]['state'] == "absent"
+  notify: restart nginx
+
+- name: "copy {{ item.key }} config template to remote node"
+  ansible.builtin.template:
+    src: "{{ nginx_virtualhost[item.key]['src'] }}"
+    dest: "/etc/nginx/conf.d/{{ nginx_virtualhost[item.key]['file'] }}"
+    owner: root
+    group: root
+    mode: 0644
+    backup: "{{ nginx_virtualhost[item.key]['backup'] }}"
+  when: nginx_virtualhost[item.key]['state'] == "present"
+  notify: restart nginx

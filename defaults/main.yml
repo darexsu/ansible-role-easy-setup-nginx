@@ -1,5 +1,5 @@
 ---
-# global
+# Nginx
 #  ├── install
 #  |    ├── packages
 #  |    ├── dependencies
@@ -7,39 +7,30 @@
 #  └── config
 #       ├── nginx.conf
 #       └── virtualhost.conf
-#             ├── tcp\ip socket 
-#             └── unix socket 
+#             ├── tcp\ip socket
+#             └── unix socket
 
-# global
+# Nginx
 nginx:
   enabled: false
+  src: "distribution"
+nginx_service:
+  enabled: true
+  state: "started"
 
-# global -> install
+# Nginx -> install
 nginx_install:
   enabled: false
   packages: [nginx]
   dependencies:
-    debian: [apt-transport-https, ca-certificates, curl, gnupg2, lsb-release, debian-archive-keyring] 
-    redhat: []
+    Debian: [apt-transport-https, ca-certificates, curl, gnupg2, lsb-release, debian-archive-keyring]
+    RedHat: []
 
-# global -> install -> repository
-nginx_repo:
-  enabled: false
-  nginx:
-    enabled: true
-    deb: "deb http://nginx.org/packages/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} nginx"
-    rpm: "http://nginx.org/packages/rhel/$releasever/$basearch/"
-    gpg: "https://nginx.org/keys/nginx_signing.key"
-  epel:
-    enabled: false
-    rpm: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
-    gpg: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}"
-
-# global -> config -> nginx.conf
+# Nginx -> config -> nginx.conf
 nginx_conf:
   enabled: false
   file: "nginx.conf"
-  src: "nginx_conf.j2"
+  src: "nginx__conf.j2"
   backup: false
   vars:
     user: "www-data"
@@ -56,27 +47,39 @@ nginx_conf:
     keepalive_timeout: "75s"
     keepalive_requests: "1000"
 
-# global -> config -> {virtualhost}.conf
-nginx_virtualhost: 
-  enabled: false
-  file: "default.conf"
-  state: "present"
-  src: "nginx_virtualhost.j2"
-  backup: false
-  remove_default: false
-  vars:
-    listen_port: "80"
-    listen_ipv6: false
-    server_name: "localhost"
-    root: "/usr/share/nginx/html"
-    index: "index.html index.htm index.php"
-    error_page: ""
-    access_log: false
-    error_log: false
-    php_fpm:
-      tcp_ip_socket:
-        enabled: false
-        ip: ""
-      unix_socket:
-        enabled: false
-        file: ""
+# Nginx -> config -> {virtualhost}.conf
+nginx_virtualhost:
+  default_conf:
+    enabled: false
+    file: "default.conf"
+    state: "present"
+    src: "nginx__virtualhost.j2"
+    backup: false
+    vars:
+      listen_port: "80"
+      listen_ipv6: false
+      server_name: "localhost"
+      root: "/usr/share/nginx/html"
+      index: "index.html index.htm index.php"
+      error_page: ""
+      access_log: false
+      error_log: false
+      fastcgi_pass: "127.0.0.1:9000"
+
+# Apache
+apache:
+  enabled: false  
+  service:
+    enabled: false
+    state: "stopped"
+
+# ------ CONSTANTS --------
+nginx_vars:
+  RedHat:
+    third_party:
+      nginx_repo: "http://nginx.org/packages/rhel/$releasever/$basearch/"
+      nginx_gpg: "https://nginx.org/keys/nginx_signing.key"
+  Debian:
+    third_party:
+      nginx_repo: "deb http://nginx.org/packages/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} nginx"
+      nginx_gpg: "https://nginx.org/keys/nginx_signing.key"

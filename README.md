@@ -1,6 +1,11 @@
 # Ansible role Nginx
 [![CI Molecule](https://github.com/darexsu/ansible-role-nginx/actions/workflows/ci.yml/badge.svg)](https://github.com/darexsu/ansible-role-nginx/actions/workflows/ci.yml)&emsp;![](https://img.shields.io/static/v1?label=idempotence&message=ok&color=success)&emsp;![Ansible Role](https://img.shields.io/ansible/role/d/57564?color=blue&label=downloads)
 
+|  Testing         |  Debian            |  Ubuntu         |  Rocky Linux  | Oracle Linux |
+| :--------------: | :----------------: | :-------------: | :-----------: | :----------: |
+| Distro release   |  10, 11            | 18.04, 20.04    |  8            | 8            |
+| Third-party repo |  nginx.org         |    nginx.org    |  nginx.org    | nginx.org    |
+
 ### 1) Install role from Galaxy
 ```
 ansible-galaxy install darexsu.nginx --force
@@ -10,36 +15,25 @@ ansible-galaxy install darexsu.nginx --force
   
   - [full playbook](#full-playbook)  
     - install
-      - [official repo](#example-playbook-install-from-official-repo)
-      - [third-party repo](#example-playbook-install-from-nginxorg-repo)   
+      - [official repo](#install-from-official-repo)
+      - [third-party repo](#install-from-nginxorg-repo)   
     - config
-      - [nginx.conf](#example-playbook-nginxconf)
-      - [virtualhost.conf tcp/ip socket](#example-playbook-virtualhostconf-tcpip)
-      - [virtualhost.conf unix socket](#example-playbook-virtualhostconf-unix)
+      - [nginx.conf](#configure-nginxconf)
+      - [virtualhost.conf tcp/ip socket](#configure-virtualhostconf-tcpip)
+      - [virtualhost.conf unix socket](#configure-virtualhostconf-unix)
 
-Molecule testing:
-
-|  Official repo   |  Third-Party repo   |
-| ---------------- | ------------------- | 
-| Debian 11        |   nginx.org         |
-| Debian 10        |   nginx.org         |
-| Ubuntu 20.04     |   nginx.org         |
-| Ubuntu 18.04     |   nginx.org         |
-| RockyLinux 8     |   nginx.org         |
-| OracleLinux 8    |   nginx.org         |
-
-Replace dictionary and Merge dictionary (with "hash_behaviour=replace" in ansible.cfg):
+Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
 ```
+# Replace             # Merge
 [host_vars]           [host_vars]
 ---                   ---
   vars:                 vars:
-    dict:                 merge:  <-- # Enable Merge
+    dict:                 merge:
       a: "value"            dict: 
       b: "value"              a: "value" 
                               b: "value"
-```
-Role recursive merge:
-```
+
+# Role recursive merge:
 [host_vars]     [current role]    [include_role]
   
   dict:          dict:              dict:
@@ -48,6 +42,7 @@ Role recursive merge:
                                       c: "3"
     
 ```
+
 ##### Full playbook
 ```yaml
 ---
@@ -56,16 +51,15 @@ Role recursive merge:
 
   vars:
     merge:
+    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             Nginx 
       nginx:
         enabled: true
+        src: "distribution"
+    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             install packages
       nginx_install:
         enabled: true
         packages: [nginx]
-      nginx_repo:  
-        epel:
-          enabled: true
-        nginx:
-          enabled: true
+    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             nginx.conf
       nginx_conf:
         enabled: true
         vars:
@@ -74,21 +68,30 @@ Role recursive merge:
           error_log: "/var/log/nginx/error.log notice"
           pidfile: "/var/run/nginx.pid"
           worker_connections: "1024"
-      nginx_virtualhost: 
-        enabled: true
-        file: [virtualhost.conf]
-        vars:
-          listen_port: "80"
-          listen_ipv6: false
-          server_name: "localhost"
-          root: "/usr/share/nginx/html"
-          index: "index.html index.htm index.php"
-          error_page: ""
-          access_log: false
-          error_log: false
-          php_fpm:
-            tcp_ip_socket:
-              listen: "127.0.0.1:9000"
+    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             virtualhost
+      nginx_virtualhost:
+      # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄             delete first config
+        default_conf:
+          enabled: true
+          file: "default.conf"
+          state: "absent"
+      # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄             add second config
+        new_conf:
+          enabled: true
+          file: "new.conf"
+          state: "present"
+          src: "nginx__virtualhost.j2"
+          backup: false
+          vars:
+            listen_port: "80"
+            listen_ipv6: false
+            server_name: "localhost"
+            root: "/usr/share/nginx/html"
+            index: "index.html index.htm index.php"
+            error_page: ""
+            access_log: false
+            error_log: false
+            fastcgi_pass: "127.0.0.1:9000"
   
   tasks:
   - name: include role darexsu.nginx
@@ -96,7 +99,7 @@ Role recursive merge:
       name: darexsu.nginx
     
 ```
-##### Example playbook: install from official repo
+##### install from official repo
 ```yaml
 ---
 - hosts: all
@@ -104,8 +107,11 @@ Role recursive merge:
 
   vars:
     merge:
+    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             Nginx 
       nginx:
         enabled: true
+        src: "distribution"   # <-- enable official(distro) repo 
+    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             install packages
       nginx_install:
         enabled: true
         packages: [nginx]
@@ -116,7 +122,7 @@ Role recursive merge:
       name: darexsu.nginx
 
 ```
-##### Example playbook: install from nginx.org repo
+##### install from nginx.org repo
 ```yaml
 ---
 - hosts: all
@@ -124,16 +130,14 @@ Role recursive merge:
 
   vars:
     merge:
+    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             Nginx 
       nginx:
         enabled: true
+        src: "third_party"   # <--  enable third-party repo 
+    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             install packages
       nginx_install:
         enabled: true
         packages: [nginx]
-      nginx_repo:  
-        epel:
-          enabled: true
-        nginx:
-          enabled: true
   
   tasks:
   - name: include role darexsu.nginx
@@ -141,7 +145,7 @@ Role recursive merge:
       name: darexsu.nginx
     
 ```
-##### Example playbook: nginx.conf
+##### configure nginx.conf
 ```yaml
 ---
 - hosts: all
@@ -149,8 +153,11 @@ Role recursive merge:
 
   vars:
     merge:
+    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             Nginx 
       nginx:
         enabled: true
+        src: "distribution"
+    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             nginx.conf
       nginx_conf:
         enabled: true
         vars:
@@ -167,7 +174,7 @@ Role recursive merge:
     
 
 ```
-##### Example playbook: virtualhost.conf tcp/ip
+##### configure virtualhost.conf tcp/ip
 ```yaml
 ---
 - hosts: all
@@ -175,25 +182,29 @@ Role recursive merge:
 
   vars:
     merge:
+    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             Nginx 
       nginx:
         enabled: true
-      nginx_virtualhost: 
-        enabled: true
-        file: [virtualhost.conf]
-        state: "present"
-        src: "nginx_virtualhost.j2"
-        vars:
-          listen_port: "80"
-          listen_ipv6: false
-          server_name: "localhost"
-          root: "/usr/share/nginx/html"
-          index: "index.html index.htm index.php"
-          error_page: ""
-          access_log: false
-          error_log: false
-          php_fpm:
-            tcp_ip_socket:
-              listen: "127.0.0.1:9000"
+        src: "distribution"
+    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             virtualhosts
+      nginx_virtualhost:
+      # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄             add new config
+        new_conf:
+          enabled: true
+          file: "new.conf"
+          state: "present"
+          src: "nginx__virtualhost.j2"
+          backup: false
+          vars:
+            listen_port: "80"
+            listen_ipv6: false
+            server_name: "localhost"
+            root: "/usr/share/nginx/html"
+            index: "index.html index.htm index.php"
+            error_page: ""
+            access_log: false
+            error_log: false
+            fastcgi_pass: "127.0.0.1:9000"
   
   tasks:
   - name: include role darexsu.nginx
@@ -201,7 +212,7 @@ Role recursive merge:
       name: darexsu.nginx
     
 ```
-##### Example playbook: virtualhost.conf unix
+##### configure virtualhost.conf unix
 ```yaml
 ---
 - hosts: all
@@ -209,25 +220,29 @@ Role recursive merge:
 
   vars:
     merge:
+    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             Nginx 
       nginx:
         enabled: true
-      nginx_virtualhost: 
-        enabled: true
-        file: [virtualhost.conf]
-        state: "present"
-        src: "nginx_virtualhost.j2"
-        vars:
-          listen_port: "80"
-          listen_ipv6: false
-          server_name: "localhost"
-          root: "/usr/share/nginx/html"
-          index: "index.html index.htm index.php"
-          error_page: ""
-          access_log: false
-          error_log: false
-          php_fpm:
-            unix_socket:
-              listen: "/var/run/php/php7.4-fpm.sock"
+        src: "distribution"
+    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             virtualhosts
+      nginx_virtualhost:
+      # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄             add new config
+        new_conf:
+          enabled: true
+          file: "new.conf"
+          state: "present"
+          src: "nginx__virtualhost.j2"
+          backup: false
+          vars:
+            listen_port: "80"
+            listen_ipv6: false
+            server_name: "localhost"
+            root: "/usr/share/nginx/html"
+            index: "index.html index.htm index.php"
+            error_page: ""
+            access_log: false
+            error_log: false
+            fastcgi_pass: "unix:/var/run/php/php7.4-fpm.sock"
   
   tasks:
   - name: include role darexsu.nginx

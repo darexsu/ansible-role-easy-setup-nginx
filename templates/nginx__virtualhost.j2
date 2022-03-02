@@ -1,0 +1,37 @@
+server {
+    listen       {{ nginx_virtualhost[item.key]['vars']['listen_port'] }};
+{% if nginx_virtualhost[item.key]['vars']['listen_ipv6'] %}
+    listen       [::]:{{ nginx_virtualhost[item.key]['vars']['listen_port'] }} ipv6only=on default_server;
+{% endif %}
+{% if nginx_virtualhost[item.key]['vars']['server_name'] %}
+    server_name {{ nginx_virtualhost[item.key]['vars']['server_name'] }};
+{% endif %}
+{% if nginx_virtualhost[item.key]['vars']['root'] %}
+    root {{ nginx_virtualhost[item.key]['vars']['root'] }};
+{% endif %}
+
+    index {{ nginx_virtualhost[item.key]['vars']['index'] }};
+
+{% if nginx_virtualhost[item.key]['vars']['error_page']  %}
+     {{ nginx_virtualhost[item.key]['vars']['error_page'] }};
+{% endif %}
+{% if nginx_virtualhost[item.key]['vars']['access_log'] %}
+    access_log /var/log/nginx/{{ nginx_virtualhost[item.key]['vars']['server_name'] }}.access.log main;
+{% endif %}
+{% if nginx_virtualhost[item.key]['vars']['error_log'] %}
+    error_log /var/log/nginx/{{ nginx_virtualhost[item.key]['vars']['server_name'] }}.error.log;
+{% endif %}
+
+{% if nginx_virtualhost[item.key]['vars']['fastcgi_pass'] %}
+location ~ \.php$ {
+
+        try_files $uri =404;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;       
+        fastcgi_pass {{ nginx_virtualhost[item.key]['vars']['fastcgi_pass'] }};
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+}
+{% endif %}
+
+}

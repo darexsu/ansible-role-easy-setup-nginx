@@ -5,7 +5,7 @@
 
 - name: copy template to remote node
   ansible.builtin.template:
-    src: nginx_conf.j2
+    src: "{{ nginx_conf.src }}"
     dest: "/etc/nginx/{{ nginx_conf.file }}"
     owner: root
     group: root
