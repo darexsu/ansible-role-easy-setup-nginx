@@ -18,11 +18,7 @@
 
 - name: nginx role is disabled
   meta: end_play
-  when: not nginx.enabled
-
-- name: control apache2 service before install
-  include_role: 
-    name: darexsu.apache    
+  when: not nginx.enabled  
 
 - name: include nginx install
   include_tasks: ./tasks/install/nginx_install__{{ ansible_os_family | lower }}.yml

@@ -66,13 +66,6 @@ nginx_virtualhost:
       error_log: false
       fastcgi_pass: "127.0.0.1:9000"
 
-# Apache
-apache:
-  enabled: false  
-  service:
-    enabled: false
-    state: "stopped"
-
 # ------ CONSTANTS --------
 nginx_vars:
   RedHat:
