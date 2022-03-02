@@ -1,7 +1,7 @@
 ---
 - name: ensure dependencies are installed.
   ansible.builtin.package:
-    name: "{{ nginx_install['dependencies']['Redhat']}}"
+    name: "{{ nginx_install['dependencies']['RedHat']}}"
     state: present
 
 - name: add nginx repo for redhat

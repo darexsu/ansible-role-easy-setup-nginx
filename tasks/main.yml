@@ -21,7 +21,7 @@
   when: not nginx.enabled  
 
 - name: include nginx install
-  include_tasks: ./tasks/install/nginx_install__{{ ansible_os_family | lower }}.yml
+  include_tasks: ./tasks/install/nginx_install__{{ ansible_os_family }}.yml
   when: nginx_install.enabled
 
 - name: include nginx config
