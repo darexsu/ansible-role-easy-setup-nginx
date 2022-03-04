@@ -39,6 +39,6 @@
 - name: "ensure nginx is {{ nginx_service['state'] }}"
   ansible.builtin.service:
     name: nginx
-    state: "{{ nginx_service['state'] }}"
-    enabled: "{{ nginx_service.enabled }}"
+    state: "{{ nginx['service']['state'] }}"
+    enabled: "{{ nginx['service']['enabled'] }}"
   when: ansible_facts.services is search("nginx")
