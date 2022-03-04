@@ -36,7 +36,7 @@
 - name: service facts
   ansible.builtin.service_facts:
 
-- name: "ensure nginx is {{ nginx_service['state'] }}"
+- name: "ensure nginx is {{ nginx['service']['state'] }}"
   ansible.builtin.service:
     name: nginx
     state: "{{ nginx['service']['state'] }}"
