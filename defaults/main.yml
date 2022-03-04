@@ -14,9 +14,9 @@
 nginx:
   enabled: false
   src: "distribution"
-nginx_service:
-  enabled: true
-  state: "started"
+  nginx_service:
+    enabled: true
+    state: "started"
 
 # Nginx -> install
 nginx_install:
