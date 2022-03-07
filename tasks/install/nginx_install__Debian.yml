@@ -9,12 +9,12 @@
   block:
     - name: add gpg key
       ansible.builtin.apt_key:
-        url: "{{ nginx_vars['Debian']['third_party']['nginx_gpg'] }}"
+        url: "{{ nginx_const['Debian']['third_party']['nginx_gpg'] }}"
         state: present
 
     - name: add nginx repo
       ansible.builtin.apt_repository:
-        repo: "{{ nginx_vars['Debian']['third_party']['nginx_repo'] }}"
+        repo: "{{ nginx_const['Debian']['third_party']['nginx_repo'] }}"
         state: present
   when: nginx.src == "third_party"
 

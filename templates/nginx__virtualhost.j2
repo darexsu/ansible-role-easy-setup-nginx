@@ -22,12 +22,17 @@ server {
     error_log /var/log/nginx/{{ nginx_virtualhost[item.key]['vars']['server_name'] }}.error.log;
 {% endif %}
 
-{% if nginx_virtualhost[item.key]['vars']['fastcgi_pass'] %}
+{% if nginx_virtualhost[item.key]['vars']['tcp_ip_socket']['enabled'] or nginx_virtualhost[item.key]['vars']['unix_socket']['enabled'] %}
 location ~ \.php$ {
 
         try_files $uri =404;
-        fastcgi_split_path_info ^(.+\.php)(/.+)$;       
-        fastcgi_pass {{ nginx_virtualhost[item.key]['vars']['fastcgi_pass'] }};
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        {% if nginx_virtualhost[item.key]['vars']['tcp_ip_socket']['enabled'] %}
+        fastcgi_pass {{ nginx_virtualhost[item.key]['vars']['tcp_ip_socket']['listen'] }};
+        {% endif %}
+        {% if nginx_virtualhost[item.key]['vars']['unix_socket']['enabled'] %}
+        fastcgi_pass unix:{{ php_vars[ansible_os_family][php.src]['php_fpm_unix_socket_path'] | default(omit) }}{{ nginx_virtualhost[item.key]['vars']['unix_socket']['file'] }};
+        {% endif %}
         fastcgi_index index.php;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         include fastcgi_params;

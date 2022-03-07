@@ -64,10 +64,15 @@ nginx_virtualhost:
       error_page: ""
       access_log: false
       error_log: false
-      fastcgi_pass: "127.0.0.1:9000"
+      tcp_ip_socket:
+        enabled: false
+        listen: "127.0.0.1:9000"
+      unix_socket:
+        enabled: false
+        file: "php-fpm.sock"
 
-# ------ CONSTANTS --------
-nginx_vars:
+# Nginx -> constants
+nginx_const:
   RedHat:
     third_party:
       nginx_repo: "http://nginx.org/packages/rhel/$releasever/$basearch/"

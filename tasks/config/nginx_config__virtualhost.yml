@@ -1,5 +1,5 @@
 ---
-- debug: 
+- debug:
     msg: "edit {{ nginx_virtualhost[item.key]['file'] }}"
 
 - name: remove virtualhost.conf

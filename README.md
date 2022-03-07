@@ -1,10 +1,14 @@
 # Ansible role Nginx
 [![CI Molecule](https://github.com/darexsu/ansible-role-nginx/actions/workflows/ci.yml/badge.svg)](https://github.com/darexsu/ansible-role-nginx/actions/workflows/ci.yml)&emsp;![](https://img.shields.io/static/v1?label=idempotence&message=ok&color=success)&emsp;![Ansible Role](https://img.shields.io/ansible/role/d/57564?color=blue&label=downloads)
 
-|  Testing         |  Debian            |  Ubuntu         |  Rocky Linux  | Oracle Linux |
-| :--------------: | :----------------: | :-------------: | :-----------: | :----------: |
-| Distro release   |  10, 11            | 18.04, 20.04    |  8            | 8            |
-| Third-party repo |  nginx.org         |    nginx.org    |  nginx.org    | nginx.org    |
+|  Testing         |  Official repo     |  Third-party repo |
+| :--------------: | :----------------: | :-------------:   |
+| Debian 11        |  Nginx 1.18        |    nginx.org      |
+| Debian 10        |  Nginx 1.14        |    nginx.org      |
+| Ubuntu 20.04     |  Nginx 1.18-1.20   |    nginx.org      |
+| Ubuntu 18.04     |  Nginx 1.18-1.20   |    nginx.org      |
+| Oracle Linux 8   |  Nginx 1.14-1.20   |    nginx.org      |
+| Rocky Linux 8    |  Nginx 1.14-1.20   |    nginx.org      |
 
 ### 1) Install role from Galaxy
 ```
@@ -22,10 +26,9 @@ ansible-galaxy install darexsu.nginx --force
       - [virtualhost.conf tcp/ip socket](#configure-virtualhostconf-tcpip)
       - [virtualhost.conf unix socket](#configure-virtualhostconf-unix)
 
-Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
+Replace or Merge dictionaries (with "hash_behaviour=replace" in ansible.cfg):
 ```
 # Replace             # Merge
-[host_vars]           [host_vars]
 ---                   ---
   vars:                 vars:
     dict:                 merge:
@@ -33,8 +36,8 @@ Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
       b: "value"              a: "value" 
                               b: "value"
 
-# Role recursive merge:
-[host_vars]     [current role]    [include_role]
+# How does merge work?
+Your vars [host_vars]  -->  default vars [current role] --> default vars [include role]
   
   dict:          dict:              dict:
     a: "1" -->     a: "1"    -->      a: "1"
@@ -51,15 +54,15 @@ Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
 
   vars:
     merge:
-    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             Nginx 
+      # Nginx
       nginx:
         enabled: true
         src: "distribution"
-    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             install packages
+      # Nginx -> install
       nginx_install:
         enabled: true
         packages: [nginx]
-    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             nginx.conf
+      # Nginx -> config -> nginx.conf
       nginx_conf:
         enabled: true
         vars:
@@ -68,14 +71,14 @@ Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
           error_log: "/var/log/nginx/error.log notice"
           pidfile: "/var/run/nginx.pid"
           worker_connections: "1024"
-    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             virtualhost
+      # Nginx -> config -> {virtualhost}.conf
       nginx_virtualhost:
-      # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄             delete first config
+      # Nginx -> config -> delete default.conf
         default_conf:
           enabled: true
           file: "default.conf"
           state: "absent"
-      # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄             add second config
+      # Nginx -> config -> add new.conf
         new_conf:
           enabled: true
           file: "new.conf"
@@ -91,8 +94,13 @@ Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
             error_page: ""
             access_log: false
             error_log: false
-            fastcgi_pass: "127.0.0.1:9000"
-  
+            tcp_ip_socket:
+              enabled: false
+              listen: "127.0.0.1:9000"
+            unix_socket:
+              enabled: true
+              file: "php-fpm.sock"
+ 
   tasks:
   - name: include role darexsu.nginx
     include_role:
@@ -107,11 +115,12 @@ Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
 
   vars:
     merge:
-    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             Nginx 
+      # Nginx
       nginx:
         enabled: true
-        src: "distribution"   # <-- enable official(distro) repo 
-    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             install packages
+      # Nginx -> enable distribution repo
+        src: "distribution"
+      # Nginx -> install
       nginx_install:
         enabled: true
         packages: [nginx]
@@ -130,11 +139,12 @@ Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
 
   vars:
     merge:
-    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             Nginx 
+      # Nginx
       nginx:
         enabled: true
-        src: "third_party"   # <--  enable third-party repo 
-    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             install packages
+      # Nginx -> enable third-party repo
+        src: "third_party"
+      # Nginx -> install
       nginx_install:
         enabled: true
         packages: [nginx]
@@ -153,11 +163,11 @@ Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
 
   vars:
     merge:
-    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             Nginx 
+      # Nginx 
       nginx:
         enabled: true
         src: "distribution"
-    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             nginx.conf
+      # Nginx -> config -> nginx.conf
       nginx_conf:
         enabled: true
         vars:
@@ -182,13 +192,13 @@ Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
 
   vars:
     merge:
-    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             Nginx 
+      # Nginx
       nginx:
         enabled: true
         src: "distribution"
-    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             virtualhosts
+      # Nginx -> config -> {virtualhost}.conf
       nginx_virtualhost:
-      # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄             add new config
+      # Nginx -> config -> add new.conf
         new_conf:
           enabled: true
           file: "new.conf"
@@ -204,7 +214,10 @@ Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
             error_page: ""
             access_log: false
             error_log: false
-            fastcgi_pass: "127.0.0.1:9000"
+      # Nginx -> config -> new.conf -> enable tcp/ip
+            tcp_ip_socket:
+              enabled: true
+              listen: "127.0.0.1:9000"  
   
   tasks:
   - name: include role darexsu.nginx
@@ -220,13 +233,13 @@ Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
 
   vars:
     merge:
-    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             Nginx 
+      # Nginx
       nginx:
         enabled: true
         src: "distribution"
-    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             virtualhosts
+      # Nginx -> config -> {virtualhost}.conf
       nginx_virtualhost:
-      # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄             add new config
+      # Nginx -> config -> add new.con
         new_conf:
           enabled: true
           file: "new.conf"
@@ -242,7 +255,10 @@ Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
             error_page: ""
             access_log: false
             error_log: false
-            fastcgi_pass: "unix:/var/run/php/php7.4-fpm.sock"
+      # Nginx -> config -> new.conf -> enable unix socket
+            unix_socket:
+              enabled: true
+              file: "php-fpm.sock"  
   
   tasks:
   - name: include role darexsu.nginx

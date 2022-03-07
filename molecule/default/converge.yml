@@ -9,16 +9,16 @@
       when: lookup('env', 'ANSIBLE_COMMAND') | length > 0
 
   vars:
-    merge:    
-    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             Nginx 
+    merge:
+      # Nginx
       nginx:
         enabled: true
-        src: "distribution"
-    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             install packages
+        src: "third_party"
+      # Nginx -> install
       nginx_install:
         enabled: true
         packages: [nginx]
-    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             nginx.conf
+      # Nginx -> config -> nginx.conf
       nginx_conf:
         enabled: true
         vars:
@@ -27,14 +27,14 @@
           error_log: "/var/log/nginx/error.log notice"
           pidfile: "/var/run/nginx.pid"
           worker_connections: "1024"
-    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄             virtualhost
+      # Nginx -> config -> {virtualhost}.conf
       nginx_virtualhost:
-      # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄             delete first config
+      # Nginx -> config -> delete default.conf
         default_conf:
           enabled: true
           file: "default.conf"
           state: "absent"
-      # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄             add second config
+      # Nginx -> config -> delete new.conf
         new_conf:
           enabled: true
           file: "new.conf"
@@ -50,16 +50,15 @@
             error_page: ""
             access_log: false
             error_log: false
-            fastcgi_pass: "127.0.0.1:9000"
-    
-    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄              Apache stop and disable on boot
-      apache:
-        enabled: true  
-        service:
-          enabled: false
-          state: "stopped"
+      # Nginx -> config -> new.conf -> enable tcp/ip
+            tcp_ip_socket:
+              enabled: true
+              listen: "127.0.0.1:9000"
+            unix_socket:
+              enabled: false
+              file: "php-fpm.sock"
 
   tasks:
-  - name: role darexsu nginx
-    include_role: 
-      name: darexsu.nginx
+    - name: role darexsu nginx
+      include_role:
+        name: darexsu.nginx
