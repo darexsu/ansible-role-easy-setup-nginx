@@ -66,7 +66,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       nginx_conf:
         enabled: true
         vars:
-          user: "www-data"
+          user: "nginx"
           worker_processes: "auto"
           error_log: "/var/log/nginx/error.log notice"
           pidfile: "/var/run/nginx.pid"
@@ -171,7 +171,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       nginx_conf:
         enabled: true
         vars:
-          user: "www-data"
+          user: "nginx"
           worker_processes: "auto"
           error_log: "/var/log/nginx/error.log notice"
           pidfile: "/var/run/nginx.pid"

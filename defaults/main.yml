@@ -33,7 +33,7 @@ nginx_conf:
   src: "nginx__conf.j2"
   backup: false
   vars:
-    user: "www-data"
+    user: "nginx"
     worker_processes: "auto"
     error_log: "/var/log/nginx/error.log notice"
     pidfile: "/var/run/nginx.pid"
