@@ -111,9 +111,9 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
               file: "php-fpm.sock"
  
   tasks:
-  - name: include role darexsu.nginx
-    include_role:
-      name: darexsu.nginx
+    - name: include role darexsu.nginx
+      include_role:
+        name: darexsu.nginx
     
 ```
 ##### Install: Nginx from official repo (short version)
@@ -133,9 +133,9 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         enabled: true
   
   tasks:
-  - name: include role darexsu.nginx
-    include_role: 
-      name: darexsu.nginx
+    - name: include role darexsu.nginx
+      include_role: 
+        name: darexsu.nginx
 
 ```
 ##### Install: Nginx from third-party repo (short version)
@@ -155,9 +155,9 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         enabled: true
   
   tasks:
-  - name: include role darexsu.nginx
-    include_role: 
-      name: darexsu.nginx
+    - name: include role darexsu.nginx
+      include_role: 
+        name: darexsu.nginx
     
 ```
 ##### Configure: nginx.conf (short version)
@@ -194,9 +194,9 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           keepalive_requests: "1000"
   
   tasks:
-  - name: include role darexsu.nginx
-    include_role: 
-      name: darexsu.nginx
+    - name: include role darexsu.nginx
+      include_role: 
+        name: darexsu.nginx
     
 
 ```
@@ -236,9 +236,9 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
               file: "php-fpm.sock"
   
   tasks:
-  - name: include role darexsu.nginx
-    include_role: 
-      name: darexsu.nginx
+    - name: include role darexsu.nginx
+      include_role: 
+        name: darexsu.nginx
     
 ```
 ##### Configure: virtualhost.conf unix-socket (short version)
@@ -277,9 +277,9 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
               file: "php-fpm.sock"
   
   tasks:
-  - name: include role darexsu.nginx
-    include_role: 
-      name: darexsu.nginx    
+    - name: include role darexsu.nginx
+      include_role: 
+        name: darexsu.nginx    
 ```
 ##### Configure: add multiple virtualhost.conf (short version)
 ```yaml
@@ -339,9 +339,9 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
               file: "php-fpm.sock"
   
   tasks:
-  - name: include role darexsu.nginx
-    include_role: 
-      name: darexsu.nginx    
+    - name: include role darexsu.nginx
+      include_role: 
+        name: darexsu.nginx    
 ```
 ##### Install and configure: Nginx (full version)
 ```yaml
@@ -410,9 +410,9 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
               file: "php-fpm.sock"
  
   tasks:
-  - name: include role darexsu.nginx
-    include_role:
-      name: darexsu.nginx
+    - name: include role darexsu.nginx
+      include_role:
+        name: darexsu.nginx
     
 ```
 ##### Install: Nginx from official repo (full version)
@@ -439,9 +439,9 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           RedHat: []
   
   tasks:
-  - name: include role darexsu.nginx
-    include_role: 
-      name: darexsu.nginx
+    - name: include role darexsu.nginx
+      include_role: 
+        name: darexsu.nginx
 
 ```
 ##### Install: Nginx from third-party repo (full version)
@@ -468,9 +468,9 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           RedHat: []
   
   tasks:
-  - name: include role darexsu.nginx
-    include_role: 
-      name: darexsu.nginx
+    - name: include role darexsu.nginx
+      include_role: 
+        name: darexsu.nginx
     
 ```
 ##### Configure: nginx.conf (full version)
@@ -510,9 +510,9 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           keepalive_requests: "1000"
   
   tasks:
-  - name: include role darexsu.nginx
-    include_role: 
-      name: darexsu.nginx
+    - name: include role darexsu.nginx
+      include_role: 
+        name: darexsu.nginx
     
 
 ```
@@ -556,9 +556,9 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
               file: "php-fpm.sock"
   
   tasks:
-  - name: include role darexsu.nginx
-    include_role: 
-      name: darexsu.nginx
+    - name: include role darexsu.nginx
+      include_role: 
+        name: darexsu.nginx
     
 ```
 ##### Configure: virtualhost.conf unix-socket (full version)
@@ -601,9 +601,9 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
               file: "php-fpm.sock"
   
   tasks:
-  - name: include role darexsu.nginx
-    include_role: 
-      name: darexsu.nginx    
+    - name: include role darexsu.nginx
+      include_role: 
+        name: darexsu.nginx    
 ```
 ##### Configure: add multiple virtualhost.conf (full version)
 ```yaml
@@ -667,7 +667,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
               file: "php-fpm.sock"
   
   tasks:
-  - name: include role darexsu.nginx
-    include_role: 
-      name: darexsu.nginx    
+    - name: include role darexsu.nginx
+      include_role: 
+        name: darexsu.nginx    
 ```
