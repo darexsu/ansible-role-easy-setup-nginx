@@ -11,7 +11,7 @@
           - [install: Nginx from third-party repo](#install-nginx-from-third-party-repo-short-version)
           - [configure: nginx.conf](#configure-nginxconf-short-version)
           - [configure: virtualhost.conf tcp/ip socket](#configure-virtualhostconf-tcpip-socket-short-version)
-          - [configure: virtualhost.conf unix socket](#configure-virtualhostconf-unix-short-version)
+          - [configure: virtualhost.conf unix socket](#configure-virtualhostconf-unix-socket-short-version)
           - [configure: add multiple virtualhost.conf](#configure-add-multiple-virtualhostconf-short-version)
   - Playbooks (full version):
       - [install and configure: Nginx](#install-and-configure-nginx-full-version)
@@ -19,7 +19,7 @@
           - [install: Nginx from third-party repo](#install-nginx-from-third-party-repo-full-version)
           - [configure: nginx.conf](#configure-nginxconf-full-version)
           - [configure: virtualhost.conf tcp/ip socket](#configure-virtualhostconf-tcpip-socket-full-version)
-          - [configure: virtualhost.conf unix socket](#configure-virtualhostconf-unix-full-version)
+          - [configure: virtualhost.conf unix socket](#configure-virtualhostconf-unix-socket-full-version)
           - [configure: add multiple virtualhost.conf](#configure-add-multiple-virtualhostconf-full-version)
 
 ### Platforms
