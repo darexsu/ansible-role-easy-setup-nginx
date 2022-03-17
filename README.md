@@ -19,7 +19,7 @@
           - [install: Nginx, repository: nginx](#install-nginx-repository-nginx-full-version)
           - [configure: nginx.conf](#configure-nginxconf-full-version)
           - [configure: virtualhost.conf tcp/ip socket](#configure-virtualhostconf-tcpip-socket-full-version)
-          - [configure: virtualhost.conf unix socket](#configure-virtualhostconf-unix-full-version)
+          - [configure: virtualhost.conf unix socket](#configure-virtualhostconf-unix-socket-full-version)
           - [configure: add multiple virtualhost.conf](#configure-add-multiple-virtualhostconf-full-version)
 
 ### Platforms
