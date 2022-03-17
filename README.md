@@ -333,7 +333,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
             error_log: false
             tcp_ip_socket:
               enabled: true
-              listen: "127.0.0.1:9000"
+              listen: "127.0.0.1:9001"
             unix_socket:
               enabled: false
               file: "php-fpm.sock"
@@ -661,7 +661,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
             error_log: false
             tcp_ip_socket:
               enabled: true
-              listen: "127.0.0.1:9000"
+              listen: "127.0.0.1:9001"
             unix_socket:
               enabled: false
               file: "php-fpm.sock"
