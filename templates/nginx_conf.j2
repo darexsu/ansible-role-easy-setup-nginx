@@ -1,0 +1,29 @@
+user  {{ nginx_conf.data.user | default("nginx") }};
+worker_processes  {{ nginx_conf.data.worker_processes | default("auto") }};
+
+error_log  {{ nginx_conf.data.error_log | default() }};
+pid        {{ nginx_conf.data.pidfile | default() }};
+
+events {
+    worker_connections  {{ nginx_conf.data.worker_connections | default("1024") }};
+    multi_accept {{ nginx_conf.data.multi_accept | default("off") }};
+}
+
+http {
+    include       {{ nginx_conf.data.mime_file_path | default() }};
+    default_type  application/octet-stream;
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log  {{ nginx_conf.data.access_log | default() }}  main;
+
+    sendfile        {{ nginx_conf.data.sendfile | default() }};
+    tcp_nopush      {{ nginx_conf.data.tcp_nopush | default() }};
+    tcp_nodelay     {{ nginx_conf.data.tcp_nodelay | default() }};
+    keepalive_timeout  {{ nginx_conf.data.keepalive_timeout | default() }};
+    keepalive_requests {{ nginx_conf.data.keepalive_requests | default() }};
+
+    include /etc/nginx/conf.d/*.conf;
+}

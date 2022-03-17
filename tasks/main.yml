@@ -20,21 +20,21 @@
   meta: end_play
   when: not nginx.enabled
 
-- name: include nginx install
-  include_tasks: ./tasks/install/nginx_install__{{ ansible_os_family }}.yml
+- name: "-> 01_Nginx_install_{{ ansible_os_family }}.yml"
+  include_tasks: "./tasks/01_Nginx_install_{{ ansible_os_family }}.yml"
   when: nginx_install.enabled
-
-- name: include nginx config
-  include_tasks: ./tasks/config/nginx_config__conf.yml
-  when: nginx_conf.enabled
-
-- name: include nginx config
-  include_tasks: ./tasks/config/nginx_config__virtualhost.yml
-  when: nginx_virtualhost[item.key]['enabled']
-  with_dict: "{{ nginx_virtualhost }}"
 
 - name: service facts
   ansible.builtin.service_facts:
+
+- name: "-> 02_Nginx_config_nginx_conf.yml"
+  include_tasks: "./tasks/02_Nginx_config_nginx_conf.yml"
+  when: nginx_conf.enabled and ansible_facts.services is search("nginx")
+
+- name: "-> 03_Nginx_config_virtualhost.yml"
+  include_tasks: "./tasks/03_Nginx_config_virtualhost.yml"
+  when: nginx_virtualhost[item.key]['enabled'] and ansible_facts.services is search("nginx")
+  with_dict: "{{ nginx_virtualhost }}"
 
 - name: "ensure nginx is {{ nginx['service']['state'] }}"
   ansible.builtin.service:

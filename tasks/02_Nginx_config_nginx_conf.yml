@@ -1,7 +1,7 @@
 ---
 - name: ensure nginx user exsist
   ansible.builtin.user:
-    name: "{{ nginx_conf.vars.user }}"
+    name: "{{ nginx_conf.data.user }}"
 
 - name: copy template to remote node
   ansible.builtin.template:

@@ -4,19 +4,19 @@
   - Role:
       - [platforms](#platforms)
       - [install](#install)
-      - [behaviour](#behaviour)
+      - [Merge behaviour](#merge-behaviour)
   - Playbooks (short version):
-      - [install and configure: Nginx](#install-and-configure-nginx-short-version)
-          - [install: Nginx from official repo](#install-nginx-from-official-repo-short-version)
-          - [install: Nginx from third-party repo](#install-nginx-from-third-party-repo-short-version)
-          - [configure: nginx.conf](#configure-nginxconf-short-version)
-          - [configure: virtualhost.conf tcp/ip socket](#configure-virtualhostconf-tcpip-socket-short-version)
-          - [configure: virtualhost.conf unix socket](#configure-virtualhostconf-unix-short-version)
-          - [configure: add multiple virtualhost.conf](#configure-add-multiple-virtualhostconf-short-version)
+      - [install and configure: Nginx](#install-and-configure-nginx-merge-version)
+          - [install: Nginx, repository: distribution](#install-nginx-repository-distribution-merge-version)
+          - [install: Nginx, repository: nginx](#install-nginx-repository-nginx-merge-version)
+          - [configure: nginx.conf](#configure-nginxconf-merge-version)
+          - [configure: virtualhost.conf tcp/ip socket](#configure-virtualhostconf-tcpip-socket-merge-version)
+          - [configure: virtualhost.conf unix socket](#configure-virtualhostconf-unix-merge-version)
+          - [configure: add multiple virtualhost.conf](#configure-add-multiple-virtualhostconf-merge-version)
   - Playbooks (full version):
       - [install and configure: Nginx](#install-and-configure-nginx-full-version)
-          - [install: Nginx from official repo](#install-nginx-from-official-repo-full-version)
-          - [install: Nginx from third-party repo](#install-nginx-from-third-party-repo-full-version)
+          - [install: Nginx, repository: distribution](#install-nginx-repository-distribution-full-version)
+          - [install: Nginx, repository: nginx](#install-nginx-repository-nginx-full-version)
           - [configure: nginx.conf](#configure-nginxconf-full-version)
           - [configure: virtualhost.conf tcp/ip socket](#configure-virtualhostconf-tcpip-socket-full-version)
           - [configure: virtualhost.conf unix socket](#configure-virtualhostconf-unix-full-version)
@@ -24,7 +24,7 @@
 
 ### Platforms
 
-|  Testing         |  Official repo     |  Third-party repo |
+|  Testing         | repo: distribution | repo: nginx       |
 | :--------------: | :----------------: | :-------------:   |
 | Debian 11        |  Nginx 1.18        |    nginx.org      |
 | Debian 10        |  Nginx 1.14        |    nginx.org      |
@@ -39,7 +39,7 @@
 ansible-galaxy install darexsu.nginx --force
 ```
 
-### Behaviour
+### Merge behaviour
 
 Replace or Merge dictionaries (with "hash_behaviour=replace" in ansible.cfg):
 ```
@@ -61,7 +61,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
     
 ```
 
-##### Install and configure: Nginx (short version)
+##### Install and configure: Nginx (merge version)
 ```yaml
 ---
 - hosts: all
@@ -72,14 +72,14 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       # Nginx
       nginx:
         enabled: true
-        src: "distribution"
+        repo: "nginx"
       # Nginx -> install
       nginx_install:
         enabled: true
       # Nginx -> config -> nginx.conf
       nginx_conf:
         enabled: true
-        vars:
+        data:
           user: "www-data"
           worker_processes: "auto"
           error_log: "/var/log/nginx/error.log notice"
@@ -92,9 +92,9 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           enabled: true
           file: "default.conf"
           state: "present"
-          src: "nginx__virtualhost.j2"
+          src: "nginx_virtualhost.j2"
           backup: false
-          vars:
+          data:
             listen_port: "80"
             listen_ipv6: false
             server_name: "localhost"
@@ -116,7 +116,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         name: darexsu.nginx
     
 ```
-##### Install: Nginx from official repo (short version)
+##### Install: Nginx, repository: distribution (merge version)
 ```yaml
 ---
 - hosts: all
@@ -127,7 +127,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       # Nginx
       nginx:
         enabled: true
-        src: "distribution"
+        repo: "distribution"
       # Nginx -> install
       nginx_install:
         enabled: true
@@ -138,7 +138,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         name: darexsu.nginx
 
 ```
-##### Install: Nginx from third-party repo (short version)
+##### Install: Nginx, repository: nginx (merge version)
 ```yaml
 ---
 - hosts: all
@@ -149,7 +149,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       # Nginx
       nginx:
         enabled: true
-        src: "third_party"
+        repo: "nginx"
       # Nginx -> install
       nginx_install:
         enabled: true
@@ -160,7 +160,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         name: darexsu.nginx
     
 ```
-##### Configure: nginx.conf (short version)
+##### Configure: nginx.conf (merge version)
 ```yaml
 ---
 - hosts: all
@@ -171,14 +171,14 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       # Nginx
       nginx:
         enabled: true
-        src: "distribution"
+        repo: "nginx"
       # Nginx -> config -> nginx.conf
       nginx_conf:
         enabled: true
         file: "nginx.conf"
-        src: "nginx__conf.j2"
+        src: "nginx_conf.j2"
         backup: false
-        vars:
+        data:
           user: "www-data"
           worker_processes: "auto"
           error_log: "/var/log/nginx/error.log notice"
@@ -200,7 +200,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
     
 
 ```
-##### Configure: virtualhost.conf tcpip-socket (short version)
+##### Configure: virtualhost.conf tcpip-socket (merge version)
 ```yaml
 ---
 - hosts: all
@@ -217,9 +217,9 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           enabled: true
           file: "default.conf"
           state: "present"
-          src: "nginx__virtualhost.j2"
+          src: "nginx_virtualhost.j2"
           backup: false
-          vars:
+          data:
             listen_port: "80"
             listen_ipv6: false
             server_name: "localhost"
@@ -241,7 +241,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         name: darexsu.nginx
     
 ```
-##### Configure: virtualhost.conf unix-socket (short version)
+##### Configure: virtualhost.conf unix-socket (merge version)
 ```yaml
 ---
 - hosts: all
@@ -258,9 +258,9 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           enabled: true
           file: "default.conf"
           state: "present"
-          src: "nginx__virtualhost.j2"
+          src: "nginx_virtualhost.j2"
           backup: false
-          vars:
+          data:
             listen_port: "80"
             listen_ipv6: false
             server_name: "localhost"
@@ -281,7 +281,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       include_role: 
         name: darexsu.nginx    
 ```
-##### Configure: add multiple virtualhost.conf (short version)
+##### Configure: add multiple virtualhost.conf (merge version)
 ```yaml
 ---
 - hosts: all
@@ -298,9 +298,9 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           enabled: true
           file: "default.conf"
           state: "present"
-          src: "nginx__virtualhost.j2"
+          src: "nginx_virtualhost.j2"
           backup: false
-          vars:
+          data:
             listen_port: "80"
             listen_ipv6: false
             server_name: "localhost"
@@ -320,9 +320,9 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           enabled: true
           file: "new.conf"
           state: "present"
-          src: "nginx__virtualhost.j2"
+          src: "nginx_virtualhost.j2"
           backup: false
-          vars:
+          data:
             listen_port: "80"
             listen_ipv6: false
             server_name: "localhost"
@@ -354,7 +354,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       # Nginx
       nginx:
         enabled: true
-        src: "distribution"
+        repo: "nginx"
         service:
           enabled: true
           state: "started"
@@ -369,9 +369,9 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       nginx_conf:
         enabled: true
         file: "nginx.conf"
-        src: "nginx__conf.j2"
+        src: "nginx_conf.j2"
         backup: false
-        vars:
+        data:
           user: "www-data"
           worker_processes: "auto"
           error_log: "/var/log/nginx/error.log notice"
@@ -391,9 +391,9 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           enabled: true
           file: "default.conf"
           state: "present"
-          src: "nginx__virtualhost.j2"
+          src: "nginx_virtualhost.j2"
           backup: false
-          vars:
+          data:
             listen_port: "80"
             listen_ipv6: false
             server_name: "localhost"
@@ -415,7 +415,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         name: darexsu.nginx
     
 ```
-##### Install: Nginx from official repo (full version)
+##### Install: Nginx, repository: distribution (full version)
 ```yaml
 ---
 - hosts: all
@@ -426,7 +426,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       # Nginx
       nginx:
         enabled: true
-        src: "distribution"
+        repo: "distribution"
         service:
           enabled: true
           state: "started"
@@ -444,7 +444,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         name: darexsu.nginx
 
 ```
-##### Install: Nginx from third-party repo (full version)
+##### Install: Nginx, repository: nginx (full version)
 ```yaml
 ---
 - hosts: all
@@ -455,7 +455,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       # Nginx
       nginx:
         enabled: true
-        src: "third_party"
+        repo: "nginx"
         service:
           enabled: true
           state: "started"
@@ -484,7 +484,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       # Nginx
       nginx:
         enabled: true
-        src: "distribution"
+        repo: "nginx"
         service:
           enabled: true
           state: "started"
@@ -492,9 +492,9 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       nginx_conf:
         enabled: true
         file: "nginx.conf"
-        src: "nginx__conf.j2"
+        src: "nginx_conf.j2"
         backup: false
-        vars:
+        data:
           user: "www-data"
           worker_processes: "auto"
           error_log: "/var/log/nginx/error.log notice"
@@ -527,7 +527,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       # Nginx
       nginx:
         enabled: true
-        src: "distribution"
+        repo: "nginx"
         service:
           enabled: true
           state: "started"
@@ -537,9 +537,9 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           enabled: true
           file: "default.conf"
           state: "present"
-          src: "nginx__virtualhost.j2"
+          src: "nginx_virtualhost.j2"
           backup: false
-          vars:
+          data:
             listen_port: "80"
             listen_ipv6: false
             server_name: "localhost"
@@ -572,7 +572,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       # Nginx
       nginx:
         enabled: true
-        src: "distribution"
+        repo: "nginx"
         service:
           enabled: true
           state: "started"
@@ -582,9 +582,9 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           enabled: true
           file: "default.conf"
           state: "present"
-          src: "nginx__virtualhost.j2"
+          src: "nginx_virtualhost.j2"
           backup: false
-          vars:
+          data:
             listen_port: "80"
             listen_ipv6: false
             server_name: "localhost"
@@ -616,7 +616,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       # Nginx
       nginx:
         enabled: true
-        src: "distribution"
+        repo: "nginx"
         service:
           enabled: true
           state: "started"
@@ -626,9 +626,9 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           enabled: true
           file: "default.conf"
           state: "present"
-          src: "nginx__virtualhost.j2"
+          src: "nginx_virtualhost.j2"
           backup: false
-          vars:
+          data:
             listen_port: "80"
             listen_ipv6: false
             server_name: "localhost"
@@ -648,9 +648,9 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           enabled: true
           file: "new.conf"
           state: "present"
-          src: "nginx__virtualhost.j2"
+          src: "nginx_virtualhost.j2"
           backup: false
-          vars:
+          data:
             listen_port: "80"
             listen_ipv6: false
             server_name: "localhost"

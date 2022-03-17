@@ -2,8 +2,7 @@
 # Nginx
 #  ├── install
 #  |    ├── packages
-#  |    ├── dependencies
-#  |    └── repositories
+#  |    └── dependencies
 #  └── config
 #       ├── nginx.conf
 #       └── virtualhost.conf
@@ -13,7 +12,7 @@
 # Nginx
 nginx:
   enabled: false
-  src: "distribution"
+  repo: "nginx"
   service:
     enabled: true
     state: "started"
@@ -30,9 +29,9 @@ nginx_install:
 nginx_conf:
   enabled: false
   file: "nginx.conf"
-  src: "nginx__conf.j2"
+  src: "nginx_conf.j2"
   backup: false
-  vars:
+  data:
     user: "www-data"
     worker_processes: "auto"
     error_log: "/var/log/nginx/error.log notice"
@@ -53,9 +52,9 @@ nginx_virtualhost:
     enabled: false
     file: "default.conf"
     state: "present"
-    src: "nginx__virtualhost.j2"
+    src: "nginx_virtualhost.j2"
     backup: false
-    vars:
+    data:
       listen_port: "80"
       listen_ipv6: false
       server_name: "localhost"
@@ -69,15 +68,15 @@ nginx_virtualhost:
         listen: "127.0.0.1:9000"
       unix_socket:
         enabled: false
-        file: "php-fpm.sock"
+        file: "php{{ php.version | default() }}-fpm.sock"
 
 # Nginx -> constants
 nginx_const:
   RedHat:
-    third_party:
+    nginx:
       nginx_repo: "http://nginx.org/packages/rhel/$releasever/$basearch/"
       nginx_gpg: "https://nginx.org/keys/nginx_signing.key"
   Debian:
-    third_party:
+    nginx:
       nginx_repo: "deb http://nginx.org/packages/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} nginx"
       nginx_gpg: "https://nginx.org/keys/nginx_signing.key"

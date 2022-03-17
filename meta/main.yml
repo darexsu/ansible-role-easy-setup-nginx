@@ -2,7 +2,7 @@
 galaxy_info:
   author: "darexsu"
   role_name: "nginx"
-  description: "install and configure nginx from distro/third-party repo (original)"
+  description: "install and configure nginx from distro/third-party"
   company: ""
   license: "license (MIT)"
   min_ansible_version: 2.9
