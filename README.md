@@ -11,7 +11,7 @@
           - [install: Nginx, repository: nginx](#install-nginx-repository-nginx-merge-version)
           - [configure: nginx.conf](#configure-nginxconf-merge-version)
           - [configure: virtualhost.conf tcp/ip socket](#configure-virtualhostconf-tcpip-socket-merge-version)
-          - [configure: virtualhost.conf unix socket](#configure-virtualhostconf-unix-merge-version)
+          - [configure: virtualhost.conf unix socket](#configure-virtualhostconf-unix-socket-merge-version)
           - [configure: add multiple virtualhost.conf](#configure-add-multiple-virtualhostconf-merge-version)
   - Playbooks (full version):
       - [install and configure: Nginx](#install-and-configure-nginx-full-version)
