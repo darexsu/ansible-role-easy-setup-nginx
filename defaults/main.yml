@@ -68,13 +68,13 @@ nginx_virtualhost:
 
 # Nginx -> constants
 nginx_const:
-  RedHat:
+  Debian:
     dependencies: [apt-transport-https, ca-certificates, curl, gnupg2, lsb-release, debian-archive-keyring]
     packages: [nginx]
-    nginx_repo: "http://nginx.org/packages/rhel/$releasever/$basearch/"
+    nginx_repo: "deb http://nginx.org/packages/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} nginx"
     nginx_gpg: "https://nginx.org/keys/nginx_signing.key"
-  Debian:
+  RedHat:
     dependencies: []
     packages: [nginx]
-    nginx_repo: "deb http://nginx.org/packages/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} nginx"
+    nginx_repo: "http://nginx.org/packages/rhel/$releasever/$basearch/"
     nginx_gpg: "https://nginx.org/keys/nginx_signing.key"
