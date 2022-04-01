@@ -20,10 +20,6 @@ nginx:
 # Nginx -> install
 nginx_install:
   enabled: false
-  packages: [nginx]
-  dependencies:
-    Debian: [apt-transport-https, ca-certificates, curl, gnupg2, lsb-release, debian-archive-keyring]
-    RedHat: []
 
 # Nginx -> config -> nginx.conf
 nginx_conf:
@@ -72,11 +68,13 @@ nginx_virtualhost:
 
 # Nginx -> constants
 nginx_const:
-  RedHat:
-    nginx:
-      nginx_repo: "http://nginx.org/packages/rhel/$releasever/$basearch/"
-      nginx_gpg: "https://nginx.org/keys/nginx_signing.key"
   Debian:
-    nginx:
-      nginx_repo: "deb http://nginx.org/packages/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} nginx"
-      nginx_gpg: "https://nginx.org/keys/nginx_signing.key"
+    dependencies: [apt-transport-https, ca-certificates, curl, gnupg2, lsb-release, debian-archive-keyring]
+    packages: [nginx]
+    nginx_repo: "deb http://nginx.org/packages/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} nginx"
+    nginx_gpg: "https://nginx.org/keys/nginx_signing.key"
+  RedHat:
+    dependencies: []
+    packages: [nginx]
+    nginx_repo: "http://nginx.org/packages/rhel/$releasever/$basearch/"
+    nginx_gpg: "https://nginx.org/keys/nginx_signing.key"

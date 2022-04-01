@@ -1,21 +1,21 @@
 ---
 - name: ensure dependencies are installed.
   ansible.builtin.package:
-    name: "{{ nginx_install['dependencies']['RedHat']}}"
+    name: "{{ nginx_const[ansible_os_family]['dependencies'] }}"
     state: present
 
 - name: add nginx repo for redhat
   block:
     - name: import nginx gpg key
       ansible.builtin.rpm_key:
-        key: "{{ nginx_const['RedHat']['nginx']['nginx_gpg'] }}"
+        key: "{{ nginx_const[ansible_os_family]['nginx_gpg'] }}"
         state: present
 
     - name: add nginx repository
       ansible.builtin.yum_repository:
         name: nginx
         description: nginx YUM repo
-        baseurl: "{{ nginx_const['RedHat']['nginx']['nginx_repo'] }}"
+        baseurl: "{{ nginx_const[ansible_os_family]['nginx_repo'] }}"
         gpgcheck: true
         enabled: true
         module_hotfixes: true
@@ -23,7 +23,7 @@
 
 - name: install nginx packages.
   ansible.builtin.package:
-    name: "{{ nginx_install.packages }}"
+    name: "{{ nginx_const[ansible_os_family]['packages'] }}"
     state: present
     update_cache: true
   ignore_errors: true

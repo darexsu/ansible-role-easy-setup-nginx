@@ -361,10 +361,6 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       # Nginx -> install
       nginx_install:
         enabled: true
-        packages: [nginx]
-        dependencies:
-          Debian: [apt-transport-https, ca-certificates, curl, gnupg2, lsb-release, debian-archive-keyring]
-          RedHat: []
       # Nginx -> config -> nginx.conf
       nginx_conf:
         enabled: true
@@ -433,10 +429,6 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       # Nginx -> install
       nginx_install:
         enabled: true
-        packages: [nginx]
-        dependencies:
-          Debian: [apt-transport-https, ca-certificates, curl, gnupg2, lsb-release, debian-archive-keyring]
-          RedHat: []
   
   tasks:
     - name: include role darexsu.nginx
@@ -462,10 +454,6 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       # Nginx -> install
       nginx_install:
         enabled: true
-        packages: [nginx]
-        dependencies:
-          Debian: [apt-transport-https, ca-certificates, curl, gnupg2, lsb-release, debian-archive-keyring]
-          RedHat: []
   
   tasks:
     - name: include role darexsu.nginx
