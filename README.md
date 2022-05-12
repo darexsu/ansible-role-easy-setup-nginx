@@ -350,60 +350,59 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
   become: true
 
   vars:
-    merge:
-      # Nginx
-      nginx:
+    # Nginx
+    nginx:
+      enabled: true
+      repo: "nginx"
+      service:
         enabled: true
-        repo: "nginx"
-        service:
-          enabled: true
-          state: "started"
-      # Nginx -> install
-      nginx_install:
+        state: "started"
+    # Nginx -> install
+    nginx_install:
+      enabled: true
+    # Nginx -> config -> nginx.conf
+    nginx_conf:
+      enabled: true
+      file: "nginx.conf"
+      src: "nginx_conf.j2"
+      backup: false
+      data:
+        user: "www-data"
+        worker_processes: "auto"
+        error_log: "/var/log/nginx/error.log notice"
+        pidfile: "/var/run/nginx.pid"
+        worker_connections: "1024"
+        multi_accept: "off"
+        mime_file_path: "/etc/nginx/mime.types"
+        access_log: "/var/log/nginx/access.log"
+        sendfile: "off"
+        tcp_nopush: "off"
+        tcp_nodelay: "on"
+        keepalive_timeout: "75s"
+        keepalive_requests: "1000"
+    # Nginx -> config -> {virtualhost}.conf
+    nginx_virtualhost:
+      default_conf:
         enabled: true
-      # Nginx -> config -> nginx.conf
-      nginx_conf:
-        enabled: true
-        file: "nginx.conf"
-        src: "nginx_conf.j2"
+        file: "default.conf"
+        state: "present"
+        src: "nginx_virtualhost.j2"
         backup: false
         data:
-          user: "www-data"
-          worker_processes: "auto"
-          error_log: "/var/log/nginx/error.log notice"
-          pidfile: "/var/run/nginx.pid"
-          worker_connections: "1024"
-          multi_accept: "off"
-          mime_file_path: "/etc/nginx/mime.types"
-          access_log: "/var/log/nginx/access.log"
-          sendfile: "off"
-          tcp_nopush: "off"
-          tcp_nodelay: "on"
-          keepalive_timeout: "75s"
-          keepalive_requests: "1000"
-      # Nginx -> config -> {virtualhost}.conf
-      nginx_virtualhost:
-        default_conf:
-          enabled: true
-          file: "default.conf"
-          state: "present"
-          src: "nginx_virtualhost.j2"
-          backup: false
-          data:
-            listen_port: "80"
-            listen_ipv6: false
-            server_name: "localhost"
-            root: "/usr/share/nginx/html"
-            index: "index.html index.htm index.php"
-            error_page: ""
-            access_log: false
-            error_log: false
-            tcp_ip_socket:
-              enabled: false
-              listen: "127.0.0.1:9000"
-            unix_socket:
-              enabled: true
-              file: "php-fpm.sock"
+          listen_port: "80"
+          listen_ipv6: false
+          server_name: "localhost"
+          root: "/usr/share/nginx/html"
+          index: "index.html index.htm index.php"
+          error_page: ""
+          access_log: false
+          error_log: false
+          tcp_ip_socket:
+            enabled: false
+            listen: "127.0.0.1:9000"
+          unix_socket:
+            enabled: true
+            file: "php-fpm.sock"
  
   tasks:
     - name: include role darexsu.nginx
@@ -418,17 +417,16 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
   become: true
 
   vars:
-    merge:
-      # Nginx
-      nginx:
+    # Nginx
+    nginx:
+      enabled: true
+      repo: "distribution"
+      service:
         enabled: true
-        repo: "distribution"
-        service:
-          enabled: true
-          state: "started"
-      # Nginx -> install
-      nginx_install:
-        enabled: true
+        state: "started"
+    # Nginx -> install
+    nginx_install:
+      enabled: true
   
   tasks:
     - name: include role darexsu.nginx
@@ -443,17 +441,16 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
   become: true
 
   vars:
-    merge:
-      # Nginx
-      nginx:
+    # Nginx
+    nginx:
+      enabled: true
+      repo: "nginx"
+      service:
         enabled: true
-        repo: "nginx"
-        service:
-          enabled: true
-          state: "started"
-      # Nginx -> install
-      nginx_install:
-        enabled: true
+        state: "started"
+    # Nginx -> install
+    nginx_install:
+      enabled: true
   
   tasks:
     - name: include role darexsu.nginx
@@ -468,34 +465,33 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
   become: true
 
   vars:
-    merge:
-      # Nginx
-      nginx:
+    # Nginx
+    nginx:
+      enabled: true
+      repo: "nginx"
+      service:
         enabled: true
-        repo: "nginx"
-        service:
-          enabled: true
-          state: "started"
-      # Nginx -> config -> nginx.conf
-      nginx_conf:
-        enabled: true
-        file: "nginx.conf"
-        src: "nginx_conf.j2"
-        backup: false
-        data:
-          user: "www-data"
-          worker_processes: "auto"
-          error_log: "/var/log/nginx/error.log notice"
-          pidfile: "/var/run/nginx.pid"
-          worker_connections: "1024"
-          multi_accept: "off"
-          mime_file_path: "/etc/nginx/mime.types"
-          access_log: "/var/log/nginx/access.log"
-          sendfile: "off"
-          tcp_nopush: "off"
-          tcp_nodelay: "on"
-          keepalive_timeout: "75s"
-          keepalive_requests: "1000"
+        state: "started"
+    # Nginx -> config -> nginx.conf
+    nginx_conf:
+      enabled: true
+      file: "nginx.conf"
+      src: "nginx_conf.j2"
+      backup: false
+      data:
+        user: "www-data"
+        worker_processes: "auto"
+        error_log: "/var/log/nginx/error.log notice"
+        pidfile: "/var/run/nginx.pid"
+        worker_connections: "1024"
+        multi_accept: "off"
+        mime_file_path: "/etc/nginx/mime.types"
+        access_log: "/var/log/nginx/access.log"
+        sendfile: "off"
+        tcp_nopush: "off"
+        tcp_nodelay: "on"
+        keepalive_timeout: "75s"
+        keepalive_requests: "1000"
   
   tasks:
     - name: include role darexsu.nginx
@@ -511,37 +507,36 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
   become: true
 
   vars:
-    merge:
-      # Nginx
-      nginx:
+    # Nginx
+    nginx:
+      enabled: true
+      repo: "nginx"
+      service:
         enabled: true
-        repo: "nginx"
-        service:
-          enabled: true
-          state: "started"
-      # Nginx -> config -> {virtualhost}.conf
-      nginx_virtualhost:
-        default_conf:
-          enabled: true
-          file: "default.conf"
-          state: "present"
-          src: "nginx_virtualhost.j2"
-          backup: false
-          data:
-            listen_port: "80"
-            listen_ipv6: false
-            server_name: "localhost"
-            root: "/usr/share/nginx/html"
-            index: "index.html index.htm index.php"
-            error_page: ""
-            access_log: false
-            error_log: false
-            tcp_ip_socket:
-              enabled: true
-              listen: "127.0.0.1:9000"
-            unix_socket:
-              enabled: false
-              file: "php-fpm.sock"
+        state: "started"
+    # Nginx -> config -> {virtualhost}.conf
+    nginx_virtualhost:
+      default_conf:
+        enabled: true
+        file: "default.conf"
+        state: "present"
+        src: "nginx_virtualhost.j2"
+        backup: false
+        data:
+          listen_port: "80"
+          listen_ipv6: false
+          server_name: "localhost"
+          root: "/usr/share/nginx/html"
+          index: "index.html index.htm index.php"
+          error_page: ""
+          access_log: false
+          error_log: false
+          tcp_ip_socket:
+            enabled: true
+            listen: "127.0.0.1:9000"
+          unix_socket:
+            enabled: false
+            file: "php-fpm.sock"
   
   tasks:
     - name: include role darexsu.nginx
@@ -556,37 +551,36 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
   become: true
 
   vars:
-    merge:
-      # Nginx
-      nginx:
+    # Nginx
+    nginx:
+      enabled: true
+      repo: "nginx"
+      service:
         enabled: true
-        repo: "nginx"
-        service:
-          enabled: true
-          state: "started"
-      # Nginx -> config -> {virtualhost}.conf
-      nginx_virtualhost:
-        default_conf:
-          enabled: true
-          file: "default.conf"
-          state: "present"
-          src: "nginx_virtualhost.j2"
-          backup: false
-          data:
-            listen_port: "80"
-            listen_ipv6: false
-            server_name: "localhost"
-            root: "/usr/share/nginx/html"
-            index: "index.html index.htm index.php"
-            error_page: ""
-            access_log: false
-            error_log: false
-            tcp_ip_socket:
-              enabled: true
-              listen: "127.0.0.1:9000"
-            unix_socket:
-              enabled: false
-              file: "php-fpm.sock"
+        state: "started"
+    # Nginx -> config -> {virtualhost}.conf
+    nginx_virtualhost:
+      default_conf:
+        enabled: true
+        file: "default.conf"
+        state: "present"
+        src: "nginx_virtualhost.j2"
+        backup: false
+        data:
+          listen_port: "80"
+          listen_ipv6: false
+          server_name: "localhost"
+          root: "/usr/share/nginx/html"
+          index: "index.html index.htm index.php"
+          error_page: ""
+          access_log: false
+          error_log: false
+          tcp_ip_socket:
+            enabled: true
+            listen: "127.0.0.1:9000"
+          unix_socket:
+            enabled: false
+            file: "php-fpm.sock"
   
   tasks:
     - name: include role darexsu.nginx
@@ -600,59 +594,58 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
   become: true
 
   vars:
-    merge:
-      # Nginx
-      nginx:
+    # Nginx
+    nginx:
+      enabled: true
+      repo: "nginx"
+      service:
         enabled: true
-        repo: "nginx"
-        service:
-          enabled: true
-          state: "started"
-      # Nginx -> config -> default.conf
-      nginx_virtualhost:
-        default_conf:
-          enabled: true
-          file: "default.conf"
-          state: "present"
-          src: "nginx_virtualhost.j2"
-          backup: false
-          data:
-            listen_port: "80"
-            listen_ipv6: false
-            server_name: "localhost"
-            root: "/usr/share/nginx/html"
-            index: "index.html index.htm index.php"
-            error_page: ""
-            access_log: false
-            error_log: false
-            tcp_ip_socket:
-              enabled: true
-              listen: "127.0.0.1:9000"
-            unix_socket:
-              enabled: false
-              file: "php-fpm.sock"
-      # Nginx -> config -> new.conf
-        new_conf:
-          enabled: true
-          file: "new.conf"
-          state: "present"
-          src: "nginx_virtualhost.j2"
-          backup: false
-          data:
-            listen_port: "80"
-            listen_ipv6: false
-            server_name: "localhost"
-            root: "/usr/share/nginx/html"
-            index: "index.html index.htm index.php"
-            error_page: ""
-            access_log: false
-            error_log: false
-            tcp_ip_socket:
-              enabled: true
-              listen: "127.0.0.1:9001"
-            unix_socket:
-              enabled: false
-              file: "php-fpm.sock"
+        state: "started"
+    # Nginx -> config -> default.conf
+    nginx_virtualhost:
+      default_conf:
+        enabled: true
+        file: "default.conf"
+        state: "present"
+        src: "nginx_virtualhost.j2"
+        backup: false
+        data:
+          listen_port: "80"
+          listen_ipv6: false
+          server_name: "localhost"
+          root: "/usr/share/nginx/html"
+          index: "index.html index.htm index.php"
+          error_page: ""
+          access_log: false
+          error_log: false
+          tcp_ip_socket:
+            enabled: true
+            listen: "127.0.0.1:9000"
+          unix_socket:
+            enabled: false
+            file: "php-fpm.sock"
+    # Nginx -> config -> new.conf
+      new_conf:
+        enabled: true
+        file: "new.conf"
+        state: "present"
+        src: "nginx_virtualhost.j2"
+        backup: false
+        data:
+          listen_port: "80"
+          listen_ipv6: false
+          server_name: "localhost"
+          root: "/usr/share/nginx/html"
+          index: "index.html index.htm index.php"
+          error_page: ""
+          access_log: false
+          error_log: false
+          tcp_ip_socket:
+            enabled: true
+            listen: "127.0.0.1:9001"
+          unix_socket:
+            enabled: false
+            file: "php-fpm.sock"
   
   tasks:
     - name: include role darexsu.nginx
