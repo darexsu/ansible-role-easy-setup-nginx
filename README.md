@@ -5,7 +5,7 @@
       - [platforms](#platforms)
       - [install](#install)
       - [Merge behaviour](#merge-behaviour)
-  - Playbooks (short version):
+  - Playbooks (merge version):
       - [install and configure: Nginx](#install-and-configure-nginx-merge-version)
           - [install: Nginx, repository: distribution](#install-nginx-repository-distribution-merge-version)
           - [install: Nginx, repository: nginx](#install-nginx-repository-nginx-merge-version)
