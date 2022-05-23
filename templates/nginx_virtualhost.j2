@@ -1,25 +1,25 @@
 server {
-    listen       {{ nginx_virtualhost[item.key]['data']['listen_port'] | default() }};
+    listen       {{ nginx_virtualhost[item.key]['data']['listen_port'] | default('') }};
 {% if nginx_virtualhost[item.key]['data']['listen_ipv6'] %}
-    listen       [::]:{{ nginx_virtualhost[item.key]['data']['listen_port'] | default() }} ipv6only=on default_server;
+    listen       [::]:{{ nginx_virtualhost[item.key]['data']['listen_port'] | default('') }} ipv6only=on default_server;
 {% endif %}
 {% if nginx_virtualhost[item.key]['data']['server_name'] %}
-    server_name {{ nginx_virtualhost[item.key]['data']['server_name'] | default() }};
+    server_name {{ nginx_virtualhost[item.key]['data']['server_name'] | default('') }};
 {% endif %}
 {% if nginx_virtualhost[item.key]['data']['root'] %}
-    root {{ nginx_virtualhost[item.key]['data']['root'] | default() }};
+    root {{ nginx_virtualhost[item.key]['data']['root'] | default('') }};
 {% endif %}
 
-    index {{ nginx_virtualhost[item.key]['data']['index'] | default() }};
+    index {{ nginx_virtualhost[item.key]['data']['index'] | default('') }};
 
 {% if nginx_virtualhost[item.key]['data']['error_page']  %}
-     {{ nginx_virtualhost[item.key]['data']['error_page'] | default() }};
+     {{ nginx_virtualhost[item.key]['data']['error_page'] | default('') }};
 {% endif %}
 {% if nginx_virtualhost[item.key]['data']['access_log'] %}
-    access_log /var/log/nginx/{{ nginx_virtualhost[item.key]['data']['server_name'] | default() }}.access.log main;
+    access_log /var/log/nginx/{{ nginx_virtualhost[item.key]['data']['server_name'] | default('') }}.access.log main;
 {% endif %}
 {% if nginx_virtualhost[item.key]['data']['error_log'] %}
-    error_log /var/log/nginx/{{ nginx_virtualhost[item.key]['data']['server_name'] | default() }}.error.log;
+    error_log /var/log/nginx/{{ nginx_virtualhost[item.key]['data']['server_name'] | default('') }}.error.log;
 {% endif %}
 
 {% if nginx_virtualhost[item.key]['data']['tcp_ip_socket']['enabled'] or nginx_virtualhost[item.key]['data']['unix_socket']['enabled'] %}
@@ -28,10 +28,10 @@ location ~ \.php$ {
         try_files $uri =404;
         fastcgi_split_path_info ^(.+\.php)(/.+)$;
         {% if nginx_virtualhost[item.key]['data']['tcp_ip_socket']['enabled'] %}
-        fastcgi_pass {{ nginx_virtualhost[item.key]['data']['tcp_ip_socket']['listen'] | default() }};
+        fastcgi_pass {{ nginx_virtualhost[item.key]['data']['tcp_ip_socket']['listen'] | default('') }};
         {% endif %}
         {% if nginx_virtualhost[item.key]['data']['unix_socket']['enabled'] %}
-        fastcgi_pass unix:{{ php_data[ansible_os_family][php.repo]['php_fpm_unix_socket_path'] | default("/var/run/php/") }}{{ nginx_virtualhost[item.key]['data']['unix_socket']['file'] |  default() }};
+        fastcgi_pass unix:{{ php_const[ansible_os_family][php.repo]['php_fpm_unix_socket_path'] | default("/var/run/php/") }}{{ nginx_virtualhost[item.key]['data']['unix_socket']['file'] |  default('php-fpm.sock') }};
         {% endif %}
         fastcgi_index index.php;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
