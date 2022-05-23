@@ -31,7 +31,7 @@ location ~ \.php$ {
         fastcgi_pass {{ nginx_virtualhost[item.key]['data']['tcp_ip_socket']['listen'] | default() }};
         {% endif %}
         {% if nginx_virtualhost[item.key]['data']['unix_socket']['enabled'] %}
-        fastcgi_pass unix:{{ php_data[ansible_os_family][php.repo]['php_fpm_unix_socket_path'] | default("/var/run/php/") }}{{ nginx_virtualhost[item.key]['data']['unix_socket']['file'] |  default() }};
+        fastcgi_pass unix:{{ php_const[ansible_os_family][php.repo]['php_fpm_unix_socket_path'] | default("/var/run/php/") }}{{ nginx_virtualhost[item.key]['data']['unix_socket']['file'] |  default() }};
         {% endif %}
         fastcgi_index index.php;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
