@@ -6,8 +6,8 @@
 #  └── config
 #       ├── nginx.conf
 #       └── virtualhost.conf
-#             ├── tcp\ip socket
-#             └── unix socket
+#             ├── php-fpm tcp\ip socket
+#             └── php-fpm unix socket
 
 # Nginx
 nginx:
@@ -43,7 +43,7 @@ nginx_conf:
     keepalive_requests: "1000"
 
 # Nginx -> config -> {virtualhost}.conf
-nginx_virtualhost:
+nginx_virtualhost: # loop
   default_conf:
     enabled: false
     file: "default.conf"
